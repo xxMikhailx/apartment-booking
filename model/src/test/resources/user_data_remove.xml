@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+    <USERS US_ID_PK="2" US_LOGIN="jhayes1" US_PASSWORD="38YZ0vKyQ60" US_EMAIL="jhayes1@thetimes.co.uk" US_NAME="Janice" US_SURNAME="Hayes" US_CREATION_DATE="2017-02-19" US_ROLE="3"/>
+    <USERS US_ID_PK="3" US_LOGIN="mlong2" US_PASSWORD="iDK9LzfJ" US_EMAIL="mlong2@sfgate.com" US_NAME="Maria" US_SURNAME="Long" US_CREATION_DATE="2016-07-24" US_ROLE="2"/>
+    <USERS US_ID_PK="4" US_LOGIN="irivera3" US_PASSWORD="PvatUHX" US_EMAIL="irivera3@jugem.jp" US_NAME="Irene" US_SURNAME="Rivera" US_CREATION_DATE="2016-10-11" US_ROLE="3"/>
+    <USERS US_ID_PK="5" US_LOGIN="ecastillo4" US_PASSWORD="papT2hlzZ" US_EMAIL="ecastillo4@earthlink.net" US_NAME="Eric" US_SURNAME="Castillo" US_CREATION_DATE="2016-10-04" US_ROLE="1"/>
+    <USERS US_ID_PK="6" US_LOGIN="tmccoy5" US_PASSWORD="RBnRvfOEjwLc" US_EMAIL="tmccoy5@upenn.edu" US_NAME="Teresa" US_SURNAME="Mccoy" US_CREATION_DATE="2017-02-08" US_ROLE="0"/>
+    <USERS US_ID_PK="7" US_LOGIN="devans6" US_PASSWORD="GaMvPo4eqQ" US_EMAIL="devans6@de.vu" US_NAME="Daniel" US_SURNAME="Evans" US_CREATION_DATE="2016-06-13" US_ROLE="1"/>
+    <USERS US_ID_PK="8" US_LOGIN="rsimmons7" US_PASSWORD="LB7JWgkpJ9Q" US_EMAIL="rsimmons7@epa.gov" US_NAME="Ryan" US_SURNAME="Simmons" US_CREATION_DATE="2017-02-21" US_ROLE="3"/>
+    <USERS US_ID_PK="9" US_LOGIN="dvasquez8" US_PASSWORD="5CdGIHwdzVF" US_EMAIL="dvasquez8@shutterfly.com" US_NAME="Diana" US_SURNAME="Vasquez" US_CREATION_DATE="2017-03-01" US_ROLE="0"/>
+    <USERS US_ID_PK="10" US_LOGIN="jhenry9" US_PASSWORD="18NCZcoeP" US_EMAIL="jhenry9@nih.gov" US_NAME="Julia" US_SURNAME="Henry" US_CREATION_DATE="2016-12-10" US_ROLE="2"/>
+</dataset>
