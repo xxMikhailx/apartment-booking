@@ -36,8 +36,8 @@ public class TestConfig {
 
     @Autowired
     @Bean
-    public JdbcTemplate jdbcTemplate(DataSource dataSource){
-        return new JdbcTemplate(dataSource);
+    public JdbcTemplate jdbcTemplate(DataSource testDataSource){
+        return new JdbcTemplate(testDataSource);
     }
 
     @Bean

@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+	<COUNTRIES CN_ID_PK="1" CN_TITLE="China"/>
+	<COUNTRIES CN_ID_PK="2" CN_TITLE="Brazil"/>
+	<COUNTRIES CN_ID_PK="3" CN_TITLE="Greece"/>
+	<COUNTRIES CN_ID_PK="4" CN_TITLE="Indonesia"/>
+	<COUNTRIES CN_ID_PK="5" CN_TITLE="Russia"/>
+	<COUNTRIES CN_ID_PK="6" CN_TITLE="Canada"/>
+	<COUNTRIES CN_ID_PK="7" CN_TITLE="Croatia"/>
+	<COUNTRIES CN_ID_PK="8" CN_TITLE="Ukraine"/>
+	<COUNTRIES CN_ID_PK="9" CN_TITLE="Portugal"/>
+	<COUNTRIES CN_ID_PK="10" CN_TITLE="Belarus"/>
+
+	<CITIES CT_ID_PK="1" CT_TITLE="Pinellas Park" CT_COUNTRY_ID="1"/>
+	<CITIES CT_ID_PK="2" CT_TITLE="Belo Jardim" CT_COUNTRY_ID="2"/>
+	<CITIES CT_ID_PK="3" CT_TITLE="Norrköping" CT_COUNTRY_ID="3"/>
+	<CITIES CT_ID_PK="4" CT_TITLE="Bukuru" CT_COUNTRY_ID="4"/>
+	<CITIES CT_ID_PK="5" CT_TITLE="Bieqiao" CT_COUNTRY_ID="5"/>
+	<CITIES CT_ID_PK="6" CT_TITLE="Gualeguay" CT_COUNTRY_ID="6"/>
+	<CITIES CT_ID_PK="7" CT_TITLE="Ciduren" CT_COUNTRY_ID="7"/>
+	<CITIES CT_ID_PK="8" CT_TITLE="Arruda dos Vinhos" CT_COUNTRY_ID="8"/>
+	<CITIES CT_ID_PK="9" CT_TITLE="Dāngām" CT_COUNTRY_ID="9"/>
+	<CITIES CT_ID_PK="10" CT_TITLE="Naudero" CT_COUNTRY_ID="10"/>
+</dataset>

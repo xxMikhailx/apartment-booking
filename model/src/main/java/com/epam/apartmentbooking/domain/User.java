@@ -1,6 +1,6 @@
 package com.epam.apartmentbooking.domain;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class User {
     private Long id;
@@ -9,13 +9,13 @@ public class User {
     private String email;
     private String name;
     private String surname;
-    private Date creationDate;
+    private LocalDate creationDate;
     private int role;
 
     public User() {
     }
 
-    public User(Long id, String login, String password, String email, String name, String surname, Date creationDate, int role) {
+    public User(Long id, String login, String password, String email, String name, String surname, LocalDate creationDate, int role) {
         this.id = id;
         this.login = login;
         this.password = password;
@@ -74,11 +74,11 @@ public class User {
         this.surname = surname;
     }
 
-    public Date getCreationDate() {
+    public LocalDate getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(LocalDate creationDate) {
         this.creationDate = creationDate;
     }
 

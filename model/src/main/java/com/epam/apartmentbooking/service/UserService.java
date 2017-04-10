@@ -1,24 +1,21 @@
-package com.epam.apartmentbooking.dao;
+package com.epam.apartmentbooking.service;
 
 import com.epam.apartmentbooking.domain.User;
 
 import java.util.List;
 
-public interface UserDAO extends GenericDAO<Long,User> {
+public interface UserService {
 
     List<User> findAllUsers();
 
-    @Override
     User findEntityById(Long id);
 
     boolean changeUserPassword(String password, Long id);
 
-    @Override
     boolean remove(Long id);
 
-    @Override
     boolean create(User user);
 
-    @Override
     boolean update(User user);
+
 }

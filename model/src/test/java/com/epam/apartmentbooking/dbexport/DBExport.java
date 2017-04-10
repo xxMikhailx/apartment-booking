@@ -21,8 +21,8 @@ public class DBExport
 
         // partial database export
         QueryDataSet partialDataSet = new QueryDataSet(connection);
-        partialDataSet.addTable("USERS", "SELECT * FROM USERS");
-//        partialDataSet.addTable("USERS");
+//        partialDataSet.addTable("USERS", "SELECT * FROM USERS");
+        partialDataSet.addTable("USERS");
         FlatXmlDataSet.write(partialDataSet, new FileOutputStream("partial.xml"));
 
         // full database export
@@ -35,6 +35,5 @@ public class DBExport
                 TablesDependencyHelper.getAllDependentTables( connection, "X" );
         IDataSet depDataSet = connection.createDataSet( depTableNames );
         FlatXmlDataSet.write(depDataSet, new FileOutputStream("dependents.xml"));*/
-
     }
 }

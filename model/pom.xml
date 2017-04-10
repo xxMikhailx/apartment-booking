@@ -44,7 +44,7 @@
 			<version>${spring.version}</version>
 		</dependency>
 
-		<!-- PERSTSTENCE -->
+		<!-- PERSISTENCE -->
 
 		<dependency>
 			<groupId>org.springframework</groupId>
