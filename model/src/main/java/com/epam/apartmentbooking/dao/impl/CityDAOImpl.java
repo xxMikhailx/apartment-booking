@@ -18,7 +18,7 @@ public class CityDAOImpl implements CityDAO {
     private static final String COLUMN_ID = "CT_ID_PK";
     private static final String COLUMN_TITLE = "CT_TITLE";
     private static final String COLUMN_COUNTRY_ID = "CT_COUNTRY_ID";
-    private static final String COLUMN_CITY_COUNTRY_TITLE = "CN_TITLE";
+    private static final String COLUMN_COUNTRY_TITLE = "CN_TITLE";
 
     private static final String SQL_SELECT_ALL_CITIES ="SELECT CT_ID_PK,CT_TITLE,CT_COUNTRY_ID,CN_TITLE FROM CITIES JOIN COUNTRIES ON (CITIES.CT_COUNTRY_ID = COUNTRIES.CN_ID_PK) ORDER BY CT_ID_PK";
     private static final String SQL_SELECT_CITY_BY_ID = "SELECT CT_ID_PK,CT_TITLE,CT_COUNTRY_ID,CN_TITLE FROM CITIES JOIN COUNTRIES ON (CITIES.CT_COUNTRY_ID = COUNTRIES.CN_ID_PK) WHERE CT_ID_PK = ?";
@@ -62,7 +62,7 @@ public class CityDAOImpl implements CityDAO {
             city.setTitle(rs.getString(COLUMN_TITLE));
             Country country = new Country();
             country.setId(rs.getLong(COLUMN_COUNTRY_ID));
-            country.setTitle(rs.getString(COLUMN_CITY_COUNTRY_TITLE));
+            country.setTitle(rs.getString(COLUMN_COUNTRY_TITLE));
             city.setCountry(country);
             return city;
         }

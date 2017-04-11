@@ -32,7 +32,7 @@ public class UserDAOTest {
     private UserDAO userDAO;
 
     @Test
-    @DatabaseSetup("/testUser/user_data.xml")
+    @DatabaseSetup("/user/user_data.xml")
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL)
     public void findAllUsersTest() throws Exception {
         List<User> users = userDAO.findAllUsers();
@@ -41,7 +41,7 @@ public class UserDAOTest {
     }
 
     @Test
-    @DatabaseSetup("/testUser/user_data.xml")
+    @DatabaseSetup("/user/user_data.xml")
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL)
     public void findEntityByIdTest() throws Exception {
         User user = userDAO.findEntityById(1L);
@@ -49,8 +49,8 @@ public class UserDAOTest {
     }
 
     @Test
-    @DatabaseSetup("/testUser/user_data.xml")
-    @ExpectedDatabase(value = "/testUser/user_data_change_password.xml", assertionMode = DatabaseAssertionMode.NON_STRICT)
+    @DatabaseSetup("/user/user_data.xml")
+    @ExpectedDatabase(value = "/user/user_data_change_password.xml", assertionMode = DatabaseAssertionMode.NON_STRICT)
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL)
     public void changeUserPasswordTest() throws Exception{
         Long id = 1L;
@@ -59,24 +59,24 @@ public class UserDAOTest {
     }
 
     @Test
-    @DatabaseSetup("/testUser/user_data.xml")
-    @ExpectedDatabase(value = "/testUser/user_data_create.xml", assertionMode = DatabaseAssertionMode.NON_STRICT)
+    @DatabaseSetup("/user/user_data.xml")
+    @ExpectedDatabase(value = "/user/user_data_create.xml", assertionMode = DatabaseAssertionMode.NON_STRICT)
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL)
     public void createTest() throws Exception{
         userDAO.create(createTestUser());
     }
 
     @Test
-    @DatabaseSetup("/testUser/user_data.xml")
-    @ExpectedDatabase(value = "/testUser/user_data_update.xml", assertionMode = DatabaseAssertionMode.NON_STRICT)
+    @DatabaseSetup("/user/user_data.xml")
+    @ExpectedDatabase(value = "/user/user_data_update.xml", assertionMode = DatabaseAssertionMode.NON_STRICT)
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL)
     public void updateTest() throws Exception{
         userDAO.update(createTestUser());
     }
 
     @Test
-    @DatabaseSetup("/testUser/user_data.xml")
-    @ExpectedDatabase(value = "/testUser/user_data_remove.xml", assertionMode = DatabaseAssertionMode.NON_STRICT)
+    @DatabaseSetup("/user/user_data.xml")
+    @ExpectedDatabase(value = "/user/user_data_remove.xml", assertionMode = DatabaseAssertionMode.NON_STRICT)
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL)
     public void removeTest() throws Exception {
         userDAO.remove(1L);

@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+	<USERS US_ID_PK="1" US_LOGIN="lbutler0" US_PASSWORD="EW4oftpj" US_EMAIL="lbutler0@purevolume.com" US_NAME="Laura" US_SURNAME="Butler" US_CREATION_DATE="2016-07-28" US_ROLE="3"/>
+	<USERS US_ID_PK="2" US_LOGIN="jhayes1" US_PASSWORD="38YZ0vKyQ60" US_EMAIL="jhayes1@thetimes.co.uk" US_NAME="Janice" US_SURNAME="Hayes" US_CREATION_DATE="2017-02-19" US_ROLE="3"/>
+	<USERS US_ID_PK="3" US_LOGIN="mlong2" US_PASSWORD="iDK9LzfJ" US_EMAIL="mlong2@sfgate.com" US_NAME="Maria" US_SURNAME="Long" US_CREATION_DATE="2016-07-24" US_ROLE="2"/>
+	<USERS US_ID_PK="4" US_LOGIN="irivera3" US_PASSWORD="PvatUHX" US_EMAIL="irivera3@jugem.jp" US_NAME="Irene" US_SURNAME="Rivera" US_CREATION_DATE="2016-10-11" US_ROLE="3"/>
+	<USERS US_ID_PK="5" US_LOGIN="ecastillo4" US_PASSWORD="papT2hlzZ" US_EMAIL="ecastillo4@earthlink.net" US_NAME="Eric" US_SURNAME="Castillo" US_CREATION_DATE="2016-10-04" US_ROLE="1"/>
+	<USERS US_ID_PK="6" US_LOGIN="tmccoy5" US_PASSWORD="RBnRvfOEjwLc" US_EMAIL="tmccoy5@upenn.edu" US_NAME="Teresa" US_SURNAME="Mccoy" US_CREATION_DATE="2017-02-08" US_ROLE="0"/>
+	<USERS US_ID_PK="7" US_LOGIN="devans6" US_PASSWORD="GaMvPo4eqQ" US_EMAIL="devans6@de.vu" US_NAME="Daniel" US_SURNAME="Evans" US_CREATION_DATE="2016-06-13" US_ROLE="1"/>
+	<USERS US_ID_PK="8" US_LOGIN="rsimmons7" US_PASSWORD="LB7JWgkpJ9Q" US_EMAIL="rsimmons7@epa.gov" US_NAME="Ryan" US_SURNAME="Simmons" US_CREATION_DATE="2017-02-21" US_ROLE="3"/>
+	<USERS US_ID_PK="9" US_LOGIN="dvasquez8" US_PASSWORD="5CdGIHwdzVF" US_EMAIL="dvasquez8@shutterfly.com" US_NAME="Diana" US_SURNAME="Vasquez" US_CREATION_DATE="2017-03-01" US_ROLE="0"/>
+	<USERS US_ID_PK="10" US_LOGIN="jhenry9" US_PASSWORD="18NCZcoeP" US_EMAIL="jhenry9@nih.gov" US_NAME="Julia" US_SURNAME="Henry" US_CREATION_DATE="2016-12-10" US_ROLE="2"/>
+
+	<COUNTRIES CN_ID_PK="1" CN_TITLE="China"/>
+	<COUNTRIES CN_ID_PK="2" CN_TITLE="Brazil"/>
+	<COUNTRIES CN_ID_PK="3" CN_TITLE="Greece"/>
+	<COUNTRIES CN_ID_PK="4" CN_TITLE="Indonesia"/>
+	<COUNTRIES CN_ID_PK="5" CN_TITLE="Russia"/>
+	<COUNTRIES CN_ID_PK="6" CN_TITLE="Canada"/>
+	<COUNTRIES CN_ID_PK="7" CN_TITLE="Croatia"/>
+	<COUNTRIES CN_ID_PK="8" CN_TITLE="Ukraine"/>
+	<COUNTRIES CN_ID_PK="9" CN_TITLE="Portugal"/>
+	<COUNTRIES CN_ID_PK="10" CN_TITLE="Belarus"/>
+
+	<CITIES CT_ID_PK="1" CT_TITLE="Pinellas Park" CT_COUNTRY_ID="1"/>
+	<CITIES CT_ID_PK="2" CT_TITLE="Belo Jardim" CT_COUNTRY_ID="2"/>
+	<CITIES CT_ID_PK="3" CT_TITLE="Norrköping" CT_COUNTRY_ID="3"/>
+	<CITIES CT_ID_PK="4" CT_TITLE="Bukuru" CT_COUNTRY_ID="4"/>
+	<CITIES CT_ID_PK="5" CT_TITLE="Bieqiao" CT_COUNTRY_ID="5"/>
+	<CITIES CT_ID_PK="6" CT_TITLE="Gualeguay" CT_COUNTRY_ID="6"/>
+	<CITIES CT_ID_PK="7" CT_TITLE="Ciduren" CT_COUNTRY_ID="7"/>
+	<CITIES CT_ID_PK="8" CT_TITLE="Arruda dos Vinhos" CT_COUNTRY_ID="8"/>
+	<CITIES CT_ID_PK="9" CT_TITLE="Dāngām" CT_COUNTRY_ID="9"/>
+	<CITIES CT_ID_PK="10" CT_TITLE="Naudero" CT_COUNTRY_ID="10"/>
+
+    <APARTMENTS AP_ID_PK="1" AP_OWNER_ID="1" AP_TITLE="Sonsing" AP_DESCRIPTION="In hac habitasse platea dictumst." AP_TYPE="FLAT" AP_PRICE="44.3245" AP_MAX_GUEST_NUMBER="4" AP_BED_NUMBER="3" AP_STATUS="AVAILABLE" AP_ADDRESS="76994 Macpherson Court" AP_CITY_ID="1"/>
+    <APARTMENTS AP_ID_PK="2" AP_OWNER_ID="2" AP_TITLE="Opela" AP_DESCRIPTION="Quisque erat eros, viverra eget, congue eget, semper rutrum, nulla. Nunc purus. Phasellus in felis. Donec semper sapien a libero." AP_TYPE="ENTIRE_HOUSE" AP_PRICE="50.8919" AP_MAX_GUEST_NUMBER="6" AP_BED_NUMBER="7" AP_STATUS="AVAILABLE" AP_ADDRESS="91788 Dunning Terrace" AP_CITY_ID="2"/>
+    <APARTMENTS AP_ID_PK="3" AP_OWNER_ID="3" AP_TITLE="Namfix" AP_DESCRIPTION="Nullam porttitor lacus at turpis." AP_TYPE="FLAT" AP_PRICE="37.0269" AP_MAX_GUEST_NUMBER="4" AP_BED_NUMBER="4" AP_STATUS="AVAILABLE" AP_ADDRESS="28 Badeau Place" AP_CITY_ID="3"/>
+    <APARTMENTS AP_ID_PK="4" AP_OWNER_ID="4" AP_TITLE="Namfix" AP_DESCRIPTION="Nulla suscipit ligula in lacus. Curabitur at ipsum ac tellus semper interdum. Mauris ullamcorper purus sit amet nulla. Quisque arcu libero, rutrum ac, lobortis vel, dapibus at, diam." AP_TYPE="ROOM" AP_PRICE="88.3682" AP_MAX_GUEST_NUMBER="4" AP_BED_NUMBER="2" AP_STATUS="AVAILABLE" AP_ADDRESS="5553 Maywood Road" AP_CITY_ID="4"/>
+    <APARTMENTS AP_ID_PK="5" AP_OWNER_ID="5" AP_TITLE="Alphazap" AP_DESCRIPTION="Cras in purus eu magna vulputate luctus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vivamus vestibulum sagittis sapien." AP_TYPE="ROOM" AP_PRICE="21.2225" AP_MAX_GUEST_NUMBER="5" AP_BED_NUMBER="6" AP_STATUS="AVAILABLE" AP_ADDRESS="72 Columbus Junction" AP_CITY_ID="5"/>
+    <APARTMENTS AP_ID_PK="6" AP_OWNER_ID="6" AP_TITLE="Aerified" AP_DESCRIPTION="Donec dapibus." AP_TYPE="ENTIRE_HOUSE" AP_PRICE="22.6896" AP_MAX_GUEST_NUMBER="7" AP_BED_NUMBER="2" AP_STATUS="BOOKED" AP_ADDRESS="4947 Manley Circle" AP_CITY_ID="6"/>
+    <APARTMENTS AP_ID_PK="7" AP_OWNER_ID="7" AP_TITLE="Temp" AP_DESCRIPTION="Donec ut dolor. Morbi vel lectus in quam fringilla rhoncus. Mauris enim leo, rhoncus sed, vestibulum sit amet, cursus id, turpis. Integer aliquet, massa id lobortis convallis, tortor risus dapibus augue, vel accumsan tellus nisi eu orci." AP_TYPE="ROOM" AP_PRICE="61.4394" AP_MAX_GUEST_NUMBER="5" AP_BED_NUMBER="3" AP_STATUS="BOOKED" AP_ADDRESS="86026 Columbus Alley" AP_CITY_ID="7"/>
+    <APARTMENTS AP_ID_PK="8" AP_OWNER_ID="8" AP_TITLE="Fintone" AP_DESCRIPTION="In hac habitasse platea dictumst. Aliquam augue quam, sollicitudin vitae, consectetuer eget, rutrum at, lorem. Integer tincidunt ante vel ipsum." AP_TYPE="FLAT" AP_PRICE="28.4695" AP_MAX_GUEST_NUMBER="4" AP_BED_NUMBER="2" AP_STATUS="BOOKED" AP_ADDRESS="6 Caliangt Plaza" AP_CITY_ID="8"/>
+    <APARTMENTS AP_ID_PK="9" AP_OWNER_ID="9" AP_TITLE="Cardify" AP_DESCRIPTION="Mauris sit amet eros." AP_TYPE="ENTIRE_HOUSE" AP_PRICE="29.7723" AP_MAX_GUEST_NUMBER="4" AP_BED_NUMBER="3" AP_STATUS="AVAILABLE" AP_ADDRESS="6797 Wayridge Way" AP_CITY_ID="9"/>
+    <APARTMENTS AP_ID_PK="10" AP_OWNER_ID="10" AP_TITLE="Domainer" AP_DESCRIPTION="Proin leo odio, porttitor id, consequat in, consequat ut, nulla. Sed accumsan felis. Ut at dolor quis odio consequat varius." AP_TYPE="FLAT" AP_PRICE="19.2517" AP_MAX_GUEST_NUMBER="4" AP_BED_NUMBER="5" AP_STATUS="AVAILABLE" AP_ADDRESS="37447 West Place" AP_CITY_ID="10"/>
+</dataset>
