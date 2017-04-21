@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface ApartmentDAO extends GenericDAO<Long, Apartment> {
 
+    List<Apartment> findAllAvailableApartments();
+
     List<Apartment> findAllApartments();
 
     @Override

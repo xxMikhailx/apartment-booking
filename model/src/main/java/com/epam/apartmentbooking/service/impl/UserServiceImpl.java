@@ -5,6 +5,7 @@ import com.epam.apartmentbooking.domain.User;
 import com.epam.apartmentbooking.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean changeUserPassword(String password, Long id) {
-        return userDAO.changeUserPassword(password, id);
+        return userDAO.changeUserPassword(BCrypt.hashpw(password, BCrypt.gensalt()), id);
     }
 
     @Override
@@ -37,11 +38,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean create(User user) {
+        user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
         return userDAO.create(user);
     }
 
     @Override
     public boolean update(User user) {
+        user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
         return userDAO.update(user);
     }
 }

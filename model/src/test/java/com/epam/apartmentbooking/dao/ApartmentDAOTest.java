@@ -33,7 +33,16 @@ public class ApartmentDAOTest {
     @Test
     @DatabaseSetup("/apartment/apartment_data.xml")
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL)
-    public void findAllUsersTest() throws Exception {
+    public void findAllAvailableApartmentsTest() throws Exception {
+        List<Apartment> apartments = apartmentDAO.findAllAvailableApartments();
+        Assert.assertEquals(6, apartments.size());
+        Assert.assertEquals("Opela", apartments.get(0).getTitle());
+    }
+
+    @Test
+    @DatabaseSetup("/apartment/apartment_data.xml")
+    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL)
+    public void findAllApartmentsTest() throws Exception {
         List<Apartment> apartments = apartmentDAO.findAllApartments();
         Assert.assertEquals(10, apartments.size());
         Assert.assertEquals("Lotstring", apartments.get(0).getTitle());

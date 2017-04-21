@@ -5,6 +5,9 @@ import com.epam.apartmentbooking.domain.Apartment;
 import java.util.List;
 
 public interface ApartmentService {
+
+    List<Apartment> findAllAvailableApartments();
+
     List<Apartment> findAllApartments();
 
     Apartment findEntityById(Long id);

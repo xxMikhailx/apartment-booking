@@ -14,6 +14,11 @@ public class ApartmentServiceImpl implements ApartmentService {
     private ApartmentDAO apartmentDAO;
 
     @Override
+    public List<Apartment> findAllAvailableApartments() {
+        return apartmentDAO.findAllAvailableApartments();
+    }
+
+    @Override
     public List<Apartment> findAllApartments() {
         return apartmentDAO.findAllApartments();
     }

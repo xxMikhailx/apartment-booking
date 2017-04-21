@@ -8,6 +8,8 @@ import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import com.github.springtestdbunit.annotation.ExpectedDatabase;
 import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
+import org.dbunit.dataset.Column;
+import org.dbunit.dataset.filter.IColumnFilter;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -54,13 +56,15 @@ public class UserDAOTest {
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL)
     public void changeUserPasswordTest() throws Exception{
         Long id = 1L;
-        String password = "testPassword";
+        String password = "$2a$10$8jTNJqwX/jaJehssYn8HUO5uOhayAuVDTR5ZQrKu3EY5HYrgX1Z3W";
         userDAO.changeUserPassword(password, id);
     }
 
     @Test
     @DatabaseSetup("/user/user_data.xml")
-    @ExpectedDatabase(value = "/user/user_data_create.xml", assertionMode = DatabaseAssertionMode.NON_STRICT)
+    @ExpectedDatabase(value = "/user/user_data_create.xml",
+            assertionMode = DatabaseAssertionMode.NON_STRICT,
+            columnFilters = IgnoreDataColumnFilter.class)
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL)
     public void createTest() throws Exception{
         userDAO.create(createTestUser());
@@ -82,11 +86,18 @@ public class UserDAOTest {
         userDAO.remove(1L);
     }
 
+    public static final class IgnoreDataColumnFilter implements IColumnFilter{
+        @Override
+        public boolean accept(String s, Column column) {
+            return s.equalsIgnoreCase("us_creation_time");
+        }
+    }
+
     private User createTestUser(){
         User user = new User();
         user.setId(1L);
         user.setLogin("testLogin");
-        user.setPassword("testPassword");
+        user.setPassword("$2a$10$8jTNJqwX/jaJehssYn8HUO5uOhayAuVDTR5ZQrKu3EY5HYrgX1Z3W");
         user.setEmail("testEmail@test.com");
         user.setName("testName");
         user.setSurname("testSurname");
