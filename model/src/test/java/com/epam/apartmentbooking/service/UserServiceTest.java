@@ -3,13 +3,16 @@ package com.epam.apartmentbooking.service;
 import com.epam.apartmentbooking.dao.impl.UserDAOImpl;
 import com.epam.apartmentbooking.domain.User;
 import com.epam.apartmentbooking.service.impl.UserServiceImpl;
+import com.epam.apartmentbooking.util.MailUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.mail.SimpleMailMessage;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -24,6 +27,12 @@ import static org.mockito.Mockito.*;
 public class UserServiceTest {
     @Mock
     private UserDAOImpl userDAO;
+
+    @Spy
+    private MailUtil mailUtil;
+
+    @Spy
+    private SimpleMailMessage template;
 
     @InjectMocks
     private UserServiceImpl userService;
@@ -78,6 +87,19 @@ public class UserServiceTest {
         ArgumentCaptor<Long> captor = ArgumentCaptor.forClass(Long.class);
         verify(userDAO, times(1)).findEntityById(captor.capture());
         assertEquals(testUser.getId(), captor.getValue());
+    }
+
+    @Test()
+    public void restoreForgottenPasswordTest() {
+        when(template.getText()).thenReturn("New password: %s");
+        doNothing().when(mailUtil).sendSimpleMessage(anyString(),anyString(),anyString());
+
+        Boolean actualResult = userService.restoreForgottenPassword("tmccoy5@upenn.edu");
+
+        assertTrue(actualResult);
+        ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+        verify(userDAO, times(1)).findUserIdByEmail(captor.capture());
+        verify(userDAO, times(1)).changeUserPassword(anyString(),anyLong());
     }
 
     @Test

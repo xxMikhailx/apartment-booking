@@ -33,6 +33,7 @@ public class UserDAOImpl implements UserDAO {
     private static final String SQL_SELECT_ALL_USERS ="SELECT US_ID_PK,US_LOGIN,US_PASSWORD,US_EMAIL,US_NAME,US_SURNAME,US_CREATION_DATE,US_ROLE FROM USERS ORDER BY US_ID_PK";
     private static final String SQL_UPDATE_USER_PASSWORD = "UPDATE USERS SET US_PASSWORD = ? WHERE US_ID_PK = ?";
     private static final String SQL_SELECT_USER_BY_ID = "SELECT US_ID_PK,US_LOGIN,US_PASSWORD,US_EMAIL,US_NAME,US_SURNAME,US_CREATION_DATE,US_ROLE FROM USERS WHERE US_ID_PK = ?";
+    private static final String SQL_SELECT_USER_ID_BY_EMAIL = "SELECT US_ID_PK FROM USERS WHERE US_EMAIL = ?";
     private static final String SQL_CREATE_USER = "INSERT INTO USERS (US_LOGIN,US_PASSWORD,US_EMAIL,US_NAME,US_SURNAME,US_CREATION_DATE,US_ROLE) VALUES (?,?,?,?,?,TO_DATE(?, 'yyyy-mm-dd'),?)";
     private static final String SQL_UPDATE_USER_BY_ID = "UPDATE USERS SET US_LOGIN = ?,US_PASSWORD = ?,US_EMAIL = ?,US_NAME = ?,US_SURNAME = ?,US_ROLE = ? WHERE US_ID_PK = ?";
     private static final String SQL_DELETE_USER = "DELETE FROM USERS WHERE US_ID_PK = ?";
@@ -47,6 +48,13 @@ public class UserDAOImpl implements UserDAO {
         return jdbcTemplate.queryForObject(SQL_SELECT_USER_BY_ID,
                 new Object[]{id},
                 new UserMapper());
+    }
+
+    @Override
+    public Long findUserIdByEmail(String email) {
+        return jdbcTemplate.queryForObject(SQL_SELECT_USER_ID_BY_EMAIL,
+                new Object[]{email},
+                Long.class);
     }
 
     @Override

@@ -11,6 +11,8 @@ public interface UserDAO extends GenericDAO<Long,User> {
     @Override
     User findEntityById(Long id);
 
+    Long findUserIdByEmail(String email);
+
     boolean changeUserPassword(String password, Long id);
 
     @Override

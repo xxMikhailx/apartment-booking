@@ -5,9 +5,11 @@ import com.epam.apartmentbooking.domain.Country;
 import com.epam.apartmentbooking.service.CountryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service("countryService")
 public class CountryServiceImpl implements CountryService {
     @Autowired
     @Qualifier("countryDAO")

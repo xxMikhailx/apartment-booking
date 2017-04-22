@@ -14,6 +14,7 @@ import javax.sql.DataSource;
 @Configuration
 @ComponentScan({"com.epam.apartmentbooking.domain","com.epam.apartmentbooking.dao"})
 @PropertySources(value = {@PropertySource("classpath:db.properties")})
+@Import(EmailConfig.class)
 public class TestConfig {
 
     @Autowired

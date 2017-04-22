@@ -5,9 +5,11 @@ import com.epam.apartmentbooking.domain.City;
 import com.epam.apartmentbooking.service.CityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service("cityService")
 public class CityServiceImpl implements CityService {
     @Autowired
     @Qualifier("cityDAO")
