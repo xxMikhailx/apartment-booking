@@ -58,6 +58,15 @@ public class ApartmentDAOTest {
 
     @Test
     @DatabaseSetup("/apartment/apartment_data.xml")
+    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL)
+    public void findAllApartmentsByCriteria() throws Exception {
+        List<Apartment> apartments = apartmentDAO.findAllApartmentsByCriteria(createTestCriteria());
+        Assert.assertEquals(1, apartments.size());
+        Assert.assertEquals("Lotstring", apartments.get(0).getTitle());
+    }
+
+    @Test
+    @DatabaseSetup("/apartment/apartment_data.xml")
     @ExpectedDatabase(value = "/apartment/apartment_data_create.xml", assertionMode = DatabaseAssertionMode.NON_STRICT)
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL)
     public void createTest() throws Exception{
@@ -101,6 +110,15 @@ public class ApartmentDAOTest {
         city.setCountry(country);
         apartment.setCity(city);
         return apartment;
+    }
+
+    private ApartmentCriteria createTestCriteria(){
+        ApartmentCriteria criteria = new ApartmentCriteria();
+        criteria.setMinGuestNumber(1);
+        criteria.setMaxGuestNumber(4);
+        criteria.setMinPrice(BigDecimal.valueOf(65L));
+        criteria.setApartmentType(ApartmentType.FLAT);
+        return criteria;
     }
 
 }

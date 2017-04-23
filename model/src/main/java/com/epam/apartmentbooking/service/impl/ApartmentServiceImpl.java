@@ -2,6 +2,7 @@ package com.epam.apartmentbooking.service.impl;
 
 import com.epam.apartmentbooking.dao.ApartmentDAO;
 import com.epam.apartmentbooking.domain.Apartment;
+import com.epam.apartmentbooking.domain.ApartmentCriteria;
 import com.epam.apartmentbooking.service.ApartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -28,6 +29,11 @@ public class ApartmentServiceImpl implements ApartmentService {
     @Override
     public Apartment findEntityById(Long id) {
         return apartmentDAO.findEntityById(id);
+    }
+
+    @Override
+    public List<Apartment> findAllApartmentsByCriteria(ApartmentCriteria criteria) {
+        return apartmentDAO.findAllApartmentsByCriteria(criteria);
     }
 
     @Override

@@ -2,6 +2,8 @@ package com.epam.apartmentbooking.dao.impl;
 
 import com.epam.apartmentbooking.dao.ApartmentDAO;
 import com.epam.apartmentbooking.domain.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -16,6 +18,8 @@ public class ApartmentDAOImpl implements ApartmentDAO {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    private final Logger log = LoggerFactory.getLogger(ApartmentDAOImpl.class);
 
     private static final String COLUMN_ID = "AP_ID_PK";
     private static final String COLUMN_OWNER_ID = "AP_OWNER_ID";
@@ -35,6 +39,7 @@ public class ApartmentDAOImpl implements ApartmentDAO {
     private static final String SQL_SELECT_ALL_AVAILABLE_APARTMENTS = "SELECT AP_ID_PK,AP_OWNER_ID,AP_TITLE,AP_DESCRIPTION,AP_TYPE,AP_PRICE,AP_MAX_GUEST_NUMBER,AP_BED_NUMBER,AP_STATUS,AP_ADDRESS,AP_CITY_ID,CT_TITLE,CT_COUNTRY_ID,CN_TITLE FROM APARTMENTS JOIN CITIES ON (APARTMENTS.AP_CITY_ID = CITIES.CT_ID_PK) JOIN COUNTRIES ON (CITIES.CT_COUNTRY_ID = COUNTRIES.CN_ID_PK) WHERE AP_STATUS = ? ORDER BY AP_ID_PK";
     private static final String SQL_SELECT_ALL_APARTMENTS = "SELECT AP_ID_PK,AP_OWNER_ID,AP_TITLE,AP_DESCRIPTION,AP_TYPE,AP_PRICE,AP_MAX_GUEST_NUMBER,AP_BED_NUMBER,AP_STATUS,AP_ADDRESS,AP_CITY_ID,CT_TITLE,CT_COUNTRY_ID,CN_TITLE FROM APARTMENTS JOIN CITIES ON (APARTMENTS.AP_CITY_ID = CITIES.CT_ID_PK) JOIN COUNTRIES ON (CITIES.CT_COUNTRY_ID = COUNTRIES.CN_ID_PK) ORDER BY AP_ID_PK";
     private static final String SQL_SELECT_APARTMENT_BY_ID = "SELECT AP_ID_PK,AP_OWNER_ID,AP_TITLE,AP_DESCRIPTION,AP_TYPE,AP_PRICE,AP_MAX_GUEST_NUMBER,AP_BED_NUMBER,AP_STATUS,AP_ADDRESS,AP_CITY_ID,CT_TITLE,CT_COUNTRY_ID,CN_TITLE FROM APARTMENTS JOIN CITIES ON (APARTMENTS.AP_CITY_ID = CITIES.CT_ID_PK) JOIN COUNTRIES ON (CITIES.CT_COUNTRY_ID = COUNTRIES.CN_ID_PK) WHERE AP_ID_PK = ?";
+    private static final String SQL_SELECT_ALL_APARTMENTS_BY_CRITERIA = "SELECT AP_ID_PK,AP_OWNER_ID,AP_TITLE,AP_DESCRIPTION,AP_TYPE,AP_PRICE,AP_MAX_GUEST_NUMBER,AP_BED_NUMBER,AP_STATUS,AP_ADDRESS,AP_CITY_ID,CT_TITLE,CT_COUNTRY_ID,CN_TITLE FROM APARTMENTS LEFT JOIN CITIES ON (APARTMENTS.AP_CITY_ID = CITIES.CT_ID_PK) LEFT JOIN COUNTRIES ON (CITIES.CT_COUNTRY_ID = COUNTRIES.CN_ID_PK) WHERE (AP_TITLE LIKE ? OR ? IS NULL) AND (AP_TYPE=? OR ? IS NULL ) AND (AP_PRICE >= ? OR ? IS NULL) AND (AP_PRICE <= ? OR ? IS NULL) AND (AP_MAX_GUEST_NUMBER >= ? OR ? IS NULL) AND (AP_MAX_GUEST_NUMBER <= ? OR ? IS NULL) AND (AP_BED_NUMBER >= ? OR ? IS NULL) AND (AP_BED_NUMBER <= ? OR ? IS NULL) AND (AP_STATUS = ? OR ? IS NULL) AND (AP_ADDRESS LIKE ? OR ? IS NULL) AND (AP_CITY_ID = ? OR ? IS NULL) AND (CN_ID_PK = ? OR ? IS NULL) ORDER BY AP_ID_PK";
     private static final String SQL_CREATE_APARTMENT = "INSERT INTO APARTMENTS (AP_OWNER_ID,AP_TITLE,AP_DESCRIPTION,AP_TYPE,AP_PRICE,AP_MAX_GUEST_NUMBER,AP_BED_NUMBER,AP_STATUS,AP_ADDRESS,AP_CITY_ID) VALUES (?,?,?,?,?,?,?,?,?,?)";
     private static final String SQL_UPDATE_APARTMENT_BY_ID = "UPDATE APARTMENTS SET AP_OWNER_ID = ?,AP_TITLE = ?,AP_DESCRIPTION = ?,AP_TYPE = ?,AP_PRICE = ?,AP_MAX_GUEST_NUMBER = ?,AP_BED_NUMBER = ?,AP_STATUS = ?,AP_ADDRESS = ?,AP_CITY_ID = ? WHERE AP_ID_PK = ?";
     private static final String SQL_DELETE_APARTMENT = "DELETE FROM APARTMENTS WHERE AP_ID_PK = ?";
@@ -52,6 +57,24 @@ public class ApartmentDAOImpl implements ApartmentDAO {
     @Override
     public Apartment findEntityById(Long id) {
         return jdbcTemplate.queryForObject(SQL_SELECT_APARTMENT_BY_ID, new Object[]{id}, new ApartmentMapper());
+    }
+
+    @Override
+    public List<Apartment> findAllApartmentsByCriteria(ApartmentCriteria criteria) {
+        return jdbcTemplate.query(SQL_SELECT_ALL_APARTMENTS_BY_CRITERIA,
+                new Object[]{criteria.getTitle(), criteria.getTitle(),
+                        criteria.getApartmentType()==null?null:criteria.getApartmentType().toString(), criteria.getApartmentType()==null?null:criteria.getApartmentType().toString(),
+                        criteria.getMinPrice(), criteria.getMinPrice(),
+                        criteria.getMaxPrice(), criteria.getMaxPrice(),
+                        criteria.getMinGuestNumber(), criteria.getMinGuestNumber(),
+                        criteria.getMaxGuestNumber(), criteria.getMaxGuestNumber(),
+                        criteria.getMinBedNumber(), criteria.getMinBedNumber(),
+                        criteria.getMaxBedNumber(), criteria.getMaxBedNumber(),
+                        criteria.getApartmentStatus()==null?null:criteria.getApartmentStatus().toString(), criteria.getApartmentStatus()==null?null:criteria.getApartmentStatus().toString(),
+                        criteria.getAddress(), criteria.getAddress(),
+                        criteria.getCityId(), criteria.getCityId(),
+                        criteria.getCountryId(), criteria.getCountryId()},
+                new ApartmentMapper());
     }
 
     @Override

@@ -29,6 +29,7 @@ public class ApartmentServiceTest {
 
     private Apartment testApartment;
     private List<Apartment> testApartments;
+    private ApartmentCriteria testCriteria;
 
     @Before
     public void doBefore(){
@@ -75,6 +76,9 @@ public class ApartmentServiceTest {
         testApartments = new ArrayList<>();
         testApartments.add(testApartment);
         testApartments.add(testApartment2);
+
+        testCriteria = new ApartmentCriteria();
+        testCriteria.setApartmentStatus(ApartmentStatus.AVAILABLE);
     }
 
     @Test
@@ -110,10 +114,21 @@ public class ApartmentServiceTest {
     }
 
     @Test
+    public void findAllApartmentsByCriteriaTest(){
+        when(apartmentService.findAllApartmentsByCriteria(any(ApartmentCriteria.class))).thenReturn(testApartments);
+
+        List<Apartment> actualApartments = apartmentService.findAllApartmentsByCriteria(testCriteria);
+
+        assertEquals(testApartments, actualApartments);
+        ArgumentCaptor<ApartmentCriteria> captor = ArgumentCaptor.forClass(ApartmentCriteria.class);
+        verify(apartmentDAO, times(1)).findAllApartmentsByCriteria(captor.capture());
+    }
+
+    @Test
     public void removeTest(){
         when(apartmentService.remove(anyLong())).thenReturn(true);
 
-        Boolean actualResult = apartmentService.remove(1L);
+        Boolean actualResult = apartmentService.remove(2L);
 
         assertTrue(actualResult);
         ArgumentCaptor<Long> captorId = ArgumentCaptor.forClass(Long.class);
