@@ -1,8 +1,6 @@
 package com.epam.apartmentbooking.config;
 
 import org.apache.commons.dbcp2.BasicDataSource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
@@ -14,7 +12,6 @@ import javax.sql.DataSource;
 @PropertySources(value = {@PropertySource("classpath:db.properties")})
 public class DBConfig {
 
-    private final Logger log = LoggerFactory.getLogger(DBConfig.class);
     private static final int INITIAL_POOL_SIZE = 20;
     private static final int MAX_POOL_SIZE = 200;
 

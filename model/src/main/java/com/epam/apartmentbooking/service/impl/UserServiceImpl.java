@@ -5,8 +5,6 @@ import com.epam.apartmentbooking.domain.User;
 import com.epam.apartmentbooking.service.UserService;
 import com.epam.apartmentbooking.util.MailUtil;
 import org.apache.commons.lang.RandomStringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.SimpleMailMessage;
@@ -17,8 +15,6 @@ import java.util.List;
 
 @Service("userService")
 public class UserServiceImpl implements UserService {
-
-    private final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Autowired
     @Qualifier("userDAO")

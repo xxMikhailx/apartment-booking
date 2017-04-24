@@ -1,7 +1,5 @@
 package com.epam.apartmentbooking.config;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,16 +16,15 @@ import java.util.Properties;
 @PropertySources(value = {@PropertySource("classpath:email.properties")})
 public class EmailConfig {
 
-    private final Logger log = LoggerFactory.getLogger(EmailConfig.class);
     private static final String MAIL_HOST = "email.host";
     private static final String MAIL_USERNAME = "email.username";
-    private static final String MAIL_PASSWORD = "email.password";
+    private static final String MAIL_PASS = "email.pass";
     private static final String MAIL_PORT = "email.port";
     private static final String MAIL_PROTOCOL = "mail.transport.protocol";
     private static final String MAIL_AUTH = "mail.smtp.auth";
     private static final String MAIL_TLS = "mail.smtp.starttls.enable";
     private static final String MAIL_DEBUG = "mail.debug";
-    private static final String MAIL_TEMPLATE_RESTORE_FORGOTTEN_PASSWORD = "mail.template.restore.password";
+    private static final String MAIL_TEMPLATE_RESTORE_PASS = "mail.template.restore";
 
     @Autowired
     private Environment environment;
@@ -37,7 +34,7 @@ public class EmailConfig {
         JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
         javaMailSender.setHost(environment.getRequiredProperty(MAIL_HOST));
         javaMailSender.setUsername(environment.getRequiredProperty(MAIL_USERNAME));
-        javaMailSender.setPassword(environment.getRequiredProperty(MAIL_PASSWORD));
+        javaMailSender.setPassword(environment.getRequiredProperty(MAIL_PASS));
         javaMailSender.setPort(Integer.parseInt(environment.getRequiredProperty(MAIL_PORT)));
         Properties props = javaMailSender.getJavaMailProperties();
         props.put(MAIL_PROTOCOL, environment.getRequiredProperty(MAIL_PROTOCOL));
@@ -50,7 +47,7 @@ public class EmailConfig {
     @Bean
     public SimpleMailMessage templateRestoreForgottenPasswordMessage() {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setText(environment.getRequiredProperty(MAIL_TEMPLATE_RESTORE_FORGOTTEN_PASSWORD));
+        message.setText(environment.getRequiredProperty(MAIL_TEMPLATE_RESTORE_PASS));
         return message;
     }
 }

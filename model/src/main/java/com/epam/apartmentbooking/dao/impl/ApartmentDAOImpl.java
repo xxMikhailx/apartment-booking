@@ -2,8 +2,6 @@ package com.epam.apartmentbooking.dao.impl;
 
 import com.epam.apartmentbooking.dao.ApartmentDAO;
 import com.epam.apartmentbooking.domain.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -18,8 +16,6 @@ public class ApartmentDAOImpl implements ApartmentDAO {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
-
-    private final Logger log = LoggerFactory.getLogger(ApartmentDAOImpl.class);
 
     private static final String COLUMN_ID = "AP_ID_PK";
     private static final String COLUMN_OWNER_ID = "AP_OWNER_ID";
