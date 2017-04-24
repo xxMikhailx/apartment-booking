@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+	<COUNTRIES CN_TITLE="China"/>
+	<COUNTRIES CN_TITLE="Brazil"/>
+	<COUNTRIES CN_TITLE="Greece"/>
+	<COUNTRIES CN_TITLE="Indonesia"/>
+	<COUNTRIES CN_TITLE="Russia"/>
+	<COUNTRIES CN_TITLE="Canada"/>
+	<COUNTRIES CN_TITLE="Croatia"/>
+	<COUNTRIES CN_TITLE="Ukraine"/>
+	<COUNTRIES CN_TITLE="Portugal"/>
+	<COUNTRIES CN_TITLE="Belarus"/>
+
+	<CITIES CT_TITLE="Pinellas Park" CT_COUNTRY_ID="1"/>
+	<CITIES CT_TITLE="Belo Jardim" CT_COUNTRY_ID="2"/>
+	<CITIES CT_TITLE="Norrköping" CT_COUNTRY_ID="3"/>
+	<CITIES CT_TITLE="Bukuru" CT_COUNTRY_ID="4"/>
+	<CITIES CT_TITLE="Bieqiao" CT_COUNTRY_ID="5"/>
+	<CITIES CT_TITLE="Gualeguay" CT_COUNTRY_ID="6"/>
+	<CITIES CT_TITLE="Ciduren" CT_COUNTRY_ID="7"/>
+	<CITIES CT_TITLE="Arruda dos Vinhos" CT_COUNTRY_ID="8"/>
+	<CITIES CT_TITLE="Dāngām" CT_COUNTRY_ID="9"/>
+	<CITIES CT_TITLE="Naudero" CT_COUNTRY_ID="10"/>
+	<CITIES CT_TITLE="Minsk" CT_COUNTRY_ID="10"/>
+</dataset>

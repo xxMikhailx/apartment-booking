@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+	<COUNTRIES CN_ID_PK="1" CN_TITLE="China"/>
+	<COUNTRIES CN_ID_PK="2" CN_TITLE="Brazil"/>
+	<COUNTRIES CN_ID_PK="3" CN_TITLE="Greece"/>
+	<COUNTRIES CN_ID_PK="4" CN_TITLE="Indonesia"/>
+	<COUNTRIES CN_ID_PK="5" CN_TITLE="Russia"/>
+	<COUNTRIES CN_ID_PK="6" CN_TITLE="Canada"/>
+	<COUNTRIES CN_ID_PK="7" CN_TITLE="Croatia"/>
+	<COUNTRIES CN_ID_PK="8" CN_TITLE="Ukraine"/>
+	<COUNTRIES CN_ID_PK="9" CN_TITLE="Portugal"/>
+	<COUNTRIES CN_ID_PK="10" CN_TITLE="Belarus"/>
+</dataset>
