@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service("userService")
 public class UserServiceImpl implements UserService {
@@ -36,6 +37,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findEntityById(Long id) {
         return userDAO.findEntityById(id);
+    }
+
+    @Override
+    public User loginUser(User user) {
+        Optional<User> optionalUser = userDAO.findAllUsers()
+                .parallelStream()
+                .filter(u -> user.getLogin().equals(u.getLogin()))
+                .filter(u -> BCrypt.checkpw(user.getPassword(), u.getPassword()))
+                .findAny();
+        return optionalUser.orElse(null);
     }
 
     @Override

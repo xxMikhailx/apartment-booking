@@ -20,5 +20,6 @@
 	</dependencies>
 	<modules>
 		<module>model</module>
-	</modules>
+		<module>controller</module>
+    </modules>
 </project>

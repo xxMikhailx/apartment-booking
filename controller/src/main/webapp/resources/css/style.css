@@ -1,0 +1,14 @@
+body {
+    padding-top: 50px;
+}
+.sign-in {
+    padding: 40px 15px;
+    text-align: center;
+}
+.error-message-text {
+    padding-bottom: 10px;
+    color: #ff0000;
+}
+.text-red{
+    color: #ff0000;
+}

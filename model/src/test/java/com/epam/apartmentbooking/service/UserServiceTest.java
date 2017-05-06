@@ -89,6 +89,8 @@ public class UserServiceTest {
         assertEquals(testUser.getId(), captor.getValue());
     }
 
+    // TODO: 5/7/2017 Make login user test
+
     @Test()
     public void restoreForgottenPasswordTest() {
         when(template.getText()).thenReturn("New password: %s");

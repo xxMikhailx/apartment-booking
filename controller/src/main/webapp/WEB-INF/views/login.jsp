@@ -53,20 +53,26 @@
 
     <form:form method="POST" commandName="userCredential" action="check-user" class="form-horizontal">
         <div class="form-group">
-            <label for="login" class="col-sm-2 control-label">Login</label>
-            <div class="col-sm-10">
+            <label for="login" class="col-sm-offset-2 col-sm-2 control-label">Login</label>
+            <div class="col-sm-4">
                 <form:input path="login" class="form-control" />
             </div>
-        </div>
-        <div class="form-group">
-            <label for="password" class="col-sm-2 control-label">Password</label>
-            <div class="col-sm-10">
-                <form:password path="password" class="form-control" />
+            <div class="col-sm-offset-4 col-sm-4">
+                <form:errors path="login" class="text-red" />
             </div>
         </div>
-        <span class="error-message-text col-sm-offset-2 col-sm-10"><c:out value="${incorrectLoginOrPasswordMessage}" /></span>
         <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
+            <label for="password" class="col-sm-offset-2 col-sm-2 control-label">Password</label>
+            <div class="col-sm-4">
+                <form:password path="password" class="form-control" />
+            </div>
+            <div class="col-sm-offset-4 col-sm-4">
+                <form:errors path="password" class="text-red" />
+            </div>
+        </div>
+        <span class="error-message-text col-sm-offset-4 col-sm-4"><c:out value="${incorrectLoginOrPasswordMessage}" /></span>
+        <div class="form-group">
+            <div class="col-sm-offset-4 col-sm-4">
                 <button type="submit" class="btn btn-default">Sign in</button>
             </div>
         </div>
