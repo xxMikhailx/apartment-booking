@@ -1,39 +1,26 @@
 package com.epam.apartmentbooking.dto;
 
+import org.hibernate.validator.constraints.Email;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
-public class UserCredential {
-
-    @NotNull
-    @Size(min = 5, max = 40, message = "Login size must be from 5 to 40 symbols.")
-    private String login;
+public class UserEmail {
 
     @NotNull
-    @Size(min = 5, max = 40, message = "Password size must be from 5 to 40 symbols.")
-    private String password;
+    @Email(message = "Must be a valid email.")
+    private String email;
 
-    public UserCredential() {
+    public UserEmail() {
     }
 
-    public UserCredential(String login, String password) {
-        this.login = login;
-        this.password = password;
+    public UserEmail(String email) {
+        this.email = email;
     }
 
-    public String getLogin() {
-        return login;
+    public String getEmail() {
+        return email;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
