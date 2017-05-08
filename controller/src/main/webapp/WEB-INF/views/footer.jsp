@@ -3,7 +3,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <footer>
-    <span class="copyright">&copy; Mikhail Kazyuchits. All Rights Reserved. 2017</span>
+    <span class="copyright">&copy; <spring:message code="copyright" /></span>
 </footer>
 
 </div><!-- /.wrapper-page -->

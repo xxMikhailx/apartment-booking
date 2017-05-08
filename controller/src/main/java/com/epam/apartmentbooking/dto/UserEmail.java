@@ -1,12 +1,12 @@
 package com.epam.apartmentbooking.dto;
 
 import org.hibernate.validator.constraints.Email;
-import javax.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.NotEmpty;
 
 public class UserEmail {
 
-    @NotNull
-    @Email(message = "Must be a valid email.")
+    @NotEmpty(message = "{email.error}")
+    @Email(message = "{email.error}")
     private String email;
 
     public UserEmail() {

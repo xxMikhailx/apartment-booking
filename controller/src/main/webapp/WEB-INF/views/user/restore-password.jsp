@@ -3,6 +3,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
+<spring:message code="page.restore.password" var="title" />
 <jsp:include page="/WEB-INF/views/header.jsp">
     <jsp:param name="title" value="Restore password"/>
 </jsp:include>
@@ -11,12 +12,12 @@
     <div class="container">
 
         <div class="page-title">
-            <h1>Restore password</h1>
+            <h1><spring:message code="page.restore.password" /></h1>
         </div>
 
         <form:form method="POST" commandName="userEmail" action="check-restore" class="form-horizontal">
             <div class="form-group">
-                <label for="email" class="col-sm-offset-2 col-sm-2 control-label">Email</label>
+                <label for="email" class="col-sm-offset-2 col-sm-2 control-label"><spring:message code="user.email" /></label>
                 <div class="col-sm-4">
                     <form:input path="email" class="form-control"/>
                 </div>
@@ -27,7 +28,7 @@
             <span class="error-message-text col-sm-offset-4 col-sm-4"><c:out value="${restorationErrorMessage}"/></span>
             <div class="form-group">
                 <div class="col-sm-offset-4 col-sm-4">
-                    <button type="submit" class="btn btn-primary">Restore password</button>
+                    <button type="submit" class="btn btn-primary"><spring:message code="action.restore.password" /></button>
                 </div>
             </div>
         </form:form>

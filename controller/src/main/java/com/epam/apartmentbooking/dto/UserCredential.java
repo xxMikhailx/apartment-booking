@@ -6,11 +6,11 @@ import javax.validation.constraints.Size;
 public class UserCredential {
 
     @NotNull
-    @Size(min = 5, max = 40, message = "Login size must be from 5 to 40 symbols.")
+    @Size(min = 4, max = 40, message = "{name.size.error}")
     private String login;
 
     @NotNull
-    @Size(min = 5, max = 40, message = "Password size must be from 5 to 40 symbols.")
+    @Size(min = 5, max = 40, message = "{password.size.error}")
     private String password;
 
     public UserCredential() {

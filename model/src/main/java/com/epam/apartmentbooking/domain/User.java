@@ -1,8 +1,9 @@
 package com.epam.apartmentbooking.domain;
 
-import com.sun.istack.internal.NotNull;
 import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
@@ -10,23 +11,23 @@ public class User {
     private Long id;
 
     @NotNull
-    @Size(min = 5, max = 40, message = "Login size must be from 5 to 40 symbols.")
+    @Size(min = 4, max = 40, message = "{name.size.error}")
     private String login;
 
     @NotNull
-    @Size(min = 5, max = 40, message = "Password size must be from 5 to 40 symbols.")
+    @Size(min = 5, max = 40, message = "{password.size.error}")
     private String password;
 
-    @NotNull
-    @Email(message = "Must be a valid email.")
+    @NotEmpty(message = "{email.error}")
+    @Email(message = "{email.error}")
     private String email;
 
     @NotNull
-    @Size(min = 2, max = 60, message = "Name size must be from 2 to 60 symbols.")
+    @Size(min = 2, max = 60, message = "{first.name.size.error}")
     private String name;
 
     @NotNull
-    @Size(min = 2, max = 60, message = "Surname size must be from 2 to 60 symbols.")
+    @Size(min = 2, max = 60, message = "{surname.size.error}")
     private String surname;
 
     private LocalDate creationDate;

@@ -28,7 +28,7 @@
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                    <span class="sr-only">Toggle navigation</span>
+                    <span class="sr-only"><spring:message code="navigation.toggle" /></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
@@ -38,29 +38,25 @@
             <div id="navbar" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
                     <c:choose>
-                        <c:when test="${param.activeLink == 'home'}"><li class="active"><a href="home">Home</a></li></c:when>
-                        <c:otherwise><li><a href="home">Home</a></li></c:otherwise>
-                    </c:choose>
-                    <c:choose>
-                        <c:when test="${param.activeLink == 'about'}"><li class="active"><a href="#">About</a></li></c:when>
-                        <c:otherwise><li><a href="#">About</a></li></c:otherwise>
+                        <c:when test="${param.activeLink == 'home'}"><li class="active"><a href="home"><spring:message code="page.main" /></a></li></c:when>
+                        <c:otherwise><li><a href="home"><spring:message code="page.main" /></a></li></c:otherwise>
                     </c:choose>
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
                     <c:choose>
-                        <c:when test="${param.activeLink == 'signin'}"><li class="active"><a href="login">Sign In</a></li></c:when>
-                        <c:otherwise><li><a href="login">Sign In</a></li></c:otherwise>
+                        <c:when test="${param.activeLink == 'signin'}"><li class="active"><a href="login"><spring:message code="page.sign.in" /></a></li></c:when>
+                        <c:otherwise><li><a href="login"><spring:message code="page.sign.in" /></a></li></c:otherwise>
                     </c:choose>
                     <c:choose>
-                        <c:when test="${param.activeLink == 'signup'}"><li class="active"><a href="register">Sign Up</a></li></c:when>
-                        <c:otherwise><li><a href="register">Sign Up</a></li></c:otherwise>
+                        <c:when test="${param.activeLink == 'signup'}"><li class="active"><a href="register"><spring:message code="page.sign.up" /></a></li></c:when>
+                        <c:otherwise><li><a href="register"><spring:message code="page.sign.up" /></a></li></c:otherwise>
                     </c:choose>
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Language<span class="caret"></span></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><spring:message code="locale.change" /><span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">English</a></li>
-                            <li><a href="#">Russian</a></li>
+                            <li><a href="?lang=en">English</a></li>
+                            <li><a href="?lang=ru">Русский</a></li>
                         </ul>
                     </li>
                 </ul>
