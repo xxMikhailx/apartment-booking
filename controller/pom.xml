@@ -19,12 +19,7 @@
     </properties>
 
     <dependencies>
-        <!-- Spring core & mvc -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
+        <!-- Spring mvc -->
 
         <dependency>
             <groupId>org.springframework</groupId>
@@ -47,29 +42,13 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- VALIDATING -->
-
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-validator</artifactId>
-            <version>${hibernate-validator.version}</version>
-        </dependency>
-
-
-        <!-- LOGGING -->
-
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <version>${slf4j.version}</version>
-            <scope>compile</scope>
-        </dependency>
-
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
             <version>1.2</version>
         </dependency>
+
+        <!-- MODULES -->
 
         <dependency>
             <groupId>com.epam</groupId>

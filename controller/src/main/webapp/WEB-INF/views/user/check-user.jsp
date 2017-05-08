@@ -9,7 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Sign In</title>
+    <title>Check user</title>
 
     <!-- Bootstrap -->
     <link href="<c:url value="/resources/css/bootstrap.min.css" />" rel="stylesheet" type="text/css" media="all">
@@ -47,36 +47,17 @@
 
 <div class="container">
 
-    <div class="sign-in">
-        <h1>Signing in</h1>
+    <div class="page-title">
+        <h1>User:</h1>
     </div>
 
-    <form:form method="POST" commandName="userCredential" action="check-user" class="form-horizontal">
-        <div class="form-group">
-            <label for="login" class="col-sm-offset-2 col-sm-2 control-label">Login</label>
-            <div class="col-sm-4">
-                <form:input path="login" class="form-control" />
-            </div>
-            <div class="col-sm-offset-4 col-sm-4">
-                <form:errors path="login" class="text-red" />
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="password" class="col-sm-offset-2 col-sm-2 control-label">Password</label>
-            <div class="col-sm-4">
-                <form:password path="password" class="form-control" />
-            </div>
-            <div class="col-sm-offset-4 col-sm-4">
-                <form:errors path="password" class="text-red" />
-            </div>
-        </div>
-        <span class="error-message-text col-sm-offset-4 col-sm-4"><c:out value="${incorrectLoginOrPasswordMessage}" /></span>
-        <div class="form-group">
-            <div class="col-sm-offset-4 col-sm-4">
-                <button type="submit" class="btn btn-default">Sign in</button>
-            </div>
-        </div>
-    </form:form>
+    <div class="page-title">
+        <p>User: ${user.login}</p>
+        <p>Password: ${user.password}</p>
+        <p>Role: ${user.role}</p>
+
+        <p><a href="home">Home page</a></p>
+    </div>
 
 </div><!-- /.container -->
 

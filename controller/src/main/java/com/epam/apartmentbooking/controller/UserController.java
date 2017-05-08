@@ -2,6 +2,7 @@ package com.epam.apartmentbooking.controller;
 
 import com.epam.apartmentbooking.domain.User;
 import com.epam.apartmentbooking.dto.UserCredential;
+import com.epam.apartmentbooking.dto.UserEmail;
 import com.epam.apartmentbooking.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,14 +32,16 @@ public class UserController {
     @GetMapping("/login")
     public String login(Model model) {
         model.addAttribute("userCredential", new UserCredential());
-        return "login";
+        return "user/login";
     }
 
     @PostMapping("/check-user")
     public String checkUser(@Valid @ModelAttribute UserCredential userCredential, BindingResult bindingResult, Model model){
         if (bindingResult.hasErrors()){
-            return "login";
+            return "user/login";
         }
+        log.info("User: " + userCredential.getLogin());
+        log.info("Password: " + userCredential.getPassword());
         User user = new User();
         user.setLogin(userCredential.getLogin());
         user.setPassword(userCredential.getPassword());
@@ -48,7 +51,45 @@ public class UserController {
             return "redirect:/home";
         } else {
             model.addAttribute("incorrectLoginOrPasswordMessage", "Login or password is incorrect!");
-            return "login";
+            return "user/login";
+        }
+    }
+
+    @GetMapping("/register")
+    public String register(Model model) {
+        model.addAttribute("user", new User());
+        return "user/register";
+    }
+
+    @PostMapping("/check-register")
+    public String checkRegister(@Valid @ModelAttribute User user, BindingResult bindingResult, Model model){
+        if (bindingResult.hasErrors()){
+            return "user/register";
+        }
+        if (userService.create(user)){
+            return "redirect:/home";
+        } else {
+            model.addAttribute("registrationErrorMessage", "Registration error (maybe the user exists).");
+            return "user/login";
+        }
+    }
+
+    @GetMapping("/restore-password")
+    public String restorePassword(Model model) {
+        model.addAttribute("userEmail", new UserEmail());
+        return "user/restore-password";
+    }
+
+    @PostMapping("/check-restore")
+    public String checkRestore(@Valid @ModelAttribute UserEmail userEmail, BindingResult bindingResult, Model model){
+        if (bindingResult.hasErrors()){
+            return "user/restore-password";
+        }
+        if (userService.restoreForgottenPassword(userEmail.getEmail())){
+            return "redirect:/user/login";
+        } else {
+            model.addAttribute("restorationErrorMessage", "Restoration error.");
+            return "user/restore-password";
         }
     }
 
@@ -61,6 +102,6 @@ public class UserController {
     public String logout(SessionStatus sessionStatus, Model model){
         sessionStatus.setComplete();
         model.addAttribute("userCredential", new UserCredential());
-        return "login";
+        return "user/login";
     }
 }
