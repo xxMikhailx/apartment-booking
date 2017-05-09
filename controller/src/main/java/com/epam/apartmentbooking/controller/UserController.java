@@ -3,23 +3,24 @@ package com.epam.apartmentbooking.controller;
 import com.epam.apartmentbooking.domain.User;
 import com.epam.apartmentbooking.dto.UserCredential;
 import com.epam.apartmentbooking.dto.UserEmail;
+import com.epam.apartmentbooking.dto.UserPassword;
 import com.epam.apartmentbooking.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.util.Locale;
+import java.util.concurrent.Callable;
 
 @Controller
 @SessionAttributes("user")
@@ -45,8 +46,6 @@ public class UserController {
         if (bindingResult.hasErrors()){
             return "user/login";
         }
-        log.info("User: " + userCredential.getLogin());
-        log.info("Password: " + userCredential.getPassword());
         User user = new User();
         user.setLogin(userCredential.getLogin());
         user.setPassword(userCredential.getPassword());
@@ -93,20 +92,48 @@ public class UserController {
     }
 
     @RequestMapping("/check-restore")
-    public String checkRestore(@Valid @ModelAttribute UserEmail userEmail, BindingResult bindingResult, Model model, Locale locale){
+    public Callable<String> checkRestore(@Valid @ModelAttribute UserEmail userEmail, BindingResult bindingResult, Model model, Locale locale){
+        return () -> {
+            if (bindingResult.hasErrors()) {
+                return "user/restore-password";
+            }
+            if (userService.restoreForgottenPassword(userEmail.getEmail())) {
+                return "redirect:/login";
+            } else {
+                model.addAttribute("restorationErrorMessage",
+                        messageSource.getMessage("message.restoration.error", null, locale));
+                return "user/restore-password";
+            }
+        };
+    }
+
+    @GetMapping("/change-password")
+    public ModelAndView changePassword(){
+//        model.addAttribute("newPassword", new UserPassword());
+        return new ModelAndView("user/change-password", "userPassword", new UserPassword());
+    }
+
+    @RequestMapping("check-change-password")
+    public String checkChangePassword(@Valid @ModelAttribute UserPassword userPassword, BindingResult bindingResult, @SessionAttribute User user, Model model, Locale locale){
         if (bindingResult.hasErrors()){
-            return "user/restore-password";
+            return "user/change-password";
         }
-        if (userService.restoreForgottenPassword(userEmail.getEmail())){
-            return "redirect:/user/login";
+        if (userPassword.getNewPassword().equals(userPassword.getNewPasswordCopy()) && BCrypt.checkpw(userPassword.getOldPassword(), user.getPassword())) {
+            if (userService.changeUserPassword(userPassword.getNewPassword(), user.getId())){
+                return "redirect:/home";
+            } else {
+                model.addAttribute("changePasswordError",
+                        messageSource.getMessage("message.change.password.server.error", null, locale));
+                return "user/change-password";
+            }
         } else {
-            model.addAttribute("restorationErrorMessage",
-                    messageSource.getMessage("message.restoration.error", null, locale));
-            return "user/restore-password";
+            model.addAttribute("changePasswordError",
+                    messageSource.getMessage("message.change.password.invalid.error", null, locale));
+            return "user/change-password";
         }
     }
 
-    @GetMapping("/home")
+    @GetMapping("/")
     public String home(){
         return "home";
     }

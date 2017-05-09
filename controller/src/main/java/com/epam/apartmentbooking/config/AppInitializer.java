@@ -19,11 +19,13 @@ public class AppInitializer implements WebApplicationInitializer {
             ctx.setServletContext(container);
 
             ServletRegistration.Dynamic servlet = container.addServlet("dispatcher", new DispatcherServlet(ctx));
+
             FilterRegistration.Dynamic filterRegistration = container.addFilter("encodingFilter", new CharacterEncodingFilter());
             filterRegistration.setInitParameter("encoding", "UTF-8");
             filterRegistration.setInitParameter("forceEncoding", "true");
             filterRegistration.addMappingForUrlPatterns(null, true, "/*");
 
+            servlet.setAsyncSupported(true);
             servlet.setLoadOnStartup(1);
             servlet.addMapping("/");
         }

@@ -33,25 +33,41 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">Apartment Booking</a>
+                <a class="navbar-brand" href="/">&lt Apartment Booking &gt</a>
             </div>
             <div id="navbar" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
                     <c:choose>
-                        <c:when test="${param.activeLink == 'home'}"><li class="active"><a href="home"><spring:message code="page.main" /></a></li></c:when>
-                        <c:otherwise><li><a href="home"><spring:message code="page.main" /></a></li></c:otherwise>
+                        <c:when test="${param.activeLink == 'home'}"><li class="active"><a href="/"><spring:message code="page.main" /></a></li></c:when>
+                        <c:otherwise><li><a href="/"><spring:message code="page.main" /></a></li></c:otherwise>
                     </c:choose>
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
                     <c:choose>
-                        <c:when test="${param.activeLink == 'signin'}"><li class="active"><a href="login"><spring:message code="page.sign.in" /></a></li></c:when>
-                        <c:otherwise><li><a href="login"><spring:message code="page.sign.in" /></a></li></c:otherwise>
+                        <c:when test="${not empty user || not empty user.role}">
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">${user.login}<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li class="user-menu-link"><spring:message code="user.role"/>: <c:choose><c:when test="${user.role == 1}"><spring:message code="user.role.admin"/></c:when><c:otherwise><spring:message code="user.role.user"/></c:otherwise></c:choose></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="change-password"><spring:message code="action.change.password"/></a></li>
+                                    <li><a href="logout"><spring:message code="action.logout"/></a></li>
+                                </ul>
+                            </li>
+                        </c:when>
+                        <c:otherwise>
+                            <c:choose>
+                                <c:when test="${param.activeLink == 'signin'}"><li class="active"><a href="login"><spring:message code="page.sign.in" /></a></li></c:when>
+                                <c:otherwise><li><a href="login"><spring:message code="page.sign.in" /></a></li></c:otherwise>
+                            </c:choose>
+                            <c:choose>
+                                <c:when test="${param.activeLink == 'signup'}"><li class="active"><a href="register"><spring:message code="page.sign.up" /></a></li></c:when>
+                                <c:otherwise><li><a href="register"><spring:message code="page.sign.up" /></a></li></c:otherwise>
+                            </c:choose>
+                        </c:otherwise>
                     </c:choose>
-                    <c:choose>
-                        <c:when test="${param.activeLink == 'signup'}"><li class="active"><a href="register"><spring:message code="page.sign.up" /></a></li></c:when>
-                        <c:otherwise><li><a href="register"><spring:message code="page.sign.up" /></a></li></c:otherwise>
-                    </c:choose>
+
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><spring:message code="locale.change" /><span class="caret"></span></a>
                         <ul class="dropdown-menu">

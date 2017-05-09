@@ -5,7 +5,7 @@
 
 <spring:message code="page.restore.password" var="title" />
 <jsp:include page="/WEB-INF/views/header.jsp">
-    <jsp:param name="title" value="Restore password"/>
+    <jsp:param name="title" value="${title}"/>
 </jsp:include>
 
 <div class="content">
