@@ -51,19 +51,19 @@
                                 <ul class="dropdown-menu">
                                     <li class="user-menu-link"><spring:message code="user.role"/>: <c:choose><c:when test="${user.role == 1}"><spring:message code="user.role.admin"/></c:when><c:otherwise><spring:message code="user.role.user"/></c:otherwise></c:choose></li>
                                     <li role="separator" class="divider"></li>
-                                    <li><a href="change-password"><spring:message code="action.change.password"/></a></li>
-                                    <li><a href="logout"><spring:message code="action.logout"/></a></li>
+                                    <li><a href="/change-password"><spring:message code="action.change.password"/></a></li>
+                                    <li><a href="/logout"><spring:message code="action.logout"/></a></li>
                                 </ul>
                             </li>
                         </c:when>
                         <c:otherwise>
                             <c:choose>
-                                <c:when test="${param.activeLink == 'signin'}"><li class="active"><a href="login"><spring:message code="page.sign.in" /></a></li></c:when>
-                                <c:otherwise><li><a href="login"><spring:message code="page.sign.in" /></a></li></c:otherwise>
+                                <c:when test="${param.activeLink == 'signin'}"><li class="active"><a href="/login"><spring:message code="page.sign.in" /></a></li></c:when>
+                                <c:otherwise><li><a href="/login"><spring:message code="page.sign.in" /></a></li></c:otherwise>
                             </c:choose>
                             <c:choose>
-                                <c:when test="${param.activeLink == 'signup'}"><li class="active"><a href="register"><spring:message code="page.sign.up" /></a></li></c:when>
-                                <c:otherwise><li><a href="register"><spring:message code="page.sign.up" /></a></li></c:otherwise>
+                                <c:when test="${param.activeLink == 'signup'}"><li class="active"><a href="/register"><spring:message code="page.sign.up" /></a></li></c:when>
+                                <c:otherwise><li><a href="/register"><spring:message code="page.sign.up" /></a></li></c:otherwise>
                             </c:choose>
                         </c:otherwise>
                     </c:choose>

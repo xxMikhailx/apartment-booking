@@ -52,7 +52,7 @@ public class UserController {
         user = userService.loginUser(user);
         if (user != null){
             model.addAttribute("user", user);
-            return "redirect:/home";
+            return "redirect:/";
         } else {
             model.addAttribute("incorrectLoginOrPasswordMessage",
                     messageSource.getMessage("message.incorrect.login.password", null, locale));
@@ -77,7 +77,7 @@ public class UserController {
                     .filter(u -> user.getLogin().equals(u.getLogin()))
                     .findFirst()
                     .orElse(user));
-            return "redirect:/home";
+            return "redirect:/";
         } else {
             model.addAttribute("registrationErrorMessage",
                     messageSource.getMessage("message.registration.error", null, locale));
@@ -109,7 +109,6 @@ public class UserController {
 
     @GetMapping("/change-password")
     public ModelAndView changePassword(){
-//        model.addAttribute("newPassword", new UserPassword());
         return new ModelAndView("user/change-password", "userPassword", new UserPassword());
     }
 

@@ -52,7 +52,8 @@ public class ApartmentDAOImpl implements ApartmentDAO {
 
     @Override
     public Apartment findEntityById(Long id) {
-        return jdbcTemplate.queryForObject(SQL_SELECT_APARTMENT_BY_ID, new Object[]{id}, new ApartmentMapper());
+        List<Apartment> apartments = jdbcTemplate.query(SQL_SELECT_APARTMENT_BY_ID, new Object[]{id}, new ApartmentMapper());
+        return apartments.isEmpty() ? null : apartments.get(0);
     }
 
     @Override
