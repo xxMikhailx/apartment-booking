@@ -132,6 +132,11 @@ public class UserController {
         }
     }
 
+    @GetMapping("/user/{user}")
+    public ModelAndView getUserById(@MatrixVariable(pathVar = "user") Long idUser){
+        return new ModelAndView("user/user-full", "fullUser", userService.findEntityById(idUser));
+    }
+
     @GetMapping("/")
     public String home(){
         return "home";
