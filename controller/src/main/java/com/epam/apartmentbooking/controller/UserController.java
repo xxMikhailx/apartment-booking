@@ -28,6 +28,10 @@ public class UserController {
 
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
+    private static final int WEAK_STRENGTH = 1;
+    private static final int FEAR_STRENGTH = 5;
+    private static final int STRONG_STRENGTH = 7;
+
     @Autowired
     private MessageSource messageSource;
 
@@ -58,6 +62,19 @@ public class UserController {
                     messageSource.getMessage("message.incorrect.login.password", null, locale));
             return "user/login";
         }
+    }
+
+    @GetMapping(value = "/check-strength", produces = {"text/html; charset=UTF-8"})
+    @ResponseBody
+    public String checkStrength(@RequestParam String password, Locale locale) {
+        if (password.length() >= WEAK_STRENGTH && password.length() < FEAR_STRENGTH){
+            return messageSource.getMessage("password.weak", null, locale);
+        } else if (password.length() >= FEAR_STRENGTH && password.length() < STRONG_STRENGTH) {
+            return messageSource.getMessage("password.fear", null, locale);
+        } else if (password.length() >= STRONG_STRENGTH) {
+            return messageSource.getMessage("password.strong", null, locale);
+        }
+        return "";
     }
 
     @GetMapping("/register")
@@ -132,8 +149,8 @@ public class UserController {
         }
     }
 
-    @GetMapping("/user/{user}")
-    public ModelAndView getUserById(@MatrixVariable(pathVar = "user") Long idUser){
+    @GetMapping("/user/{userId}")
+    public ModelAndView getUserById(@MatrixVariable(pathVar = "userId") Long idUser){
         return new ModelAndView("user/user-full", "fullUser", userService.findEntityById(idUser));
     }
 

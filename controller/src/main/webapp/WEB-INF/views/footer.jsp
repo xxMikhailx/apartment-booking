@@ -9,6 +9,17 @@
 </div><!-- /.wrapper-page -->
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="<c:url value="/resources/js/jquery.min.js" />"></script>
+<script>
+    $('#password').keyup(function doAjax() {
+        $.ajax({
+            url: 'check-strength',
+            data: ({password: $('#password').val()}),
+            success: function (data) {
+                $('#strengthValue').html(data);
+            }
+        });
+    })
+</script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
 </body>

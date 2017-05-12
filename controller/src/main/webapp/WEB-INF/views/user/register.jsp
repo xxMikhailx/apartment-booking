@@ -30,6 +30,7 @@
                 <label for="password" class="col-sm-offset-2 col-sm-2 control-label"><spring:message code="user.password" /></label>
                 <div class="col-sm-4">
                     <form:password path="password" class="form-control"/>
+                    <span style="float: right;" id="strengthValue"></span>
                 </div>
                 <div class="col-sm-offset-4 col-sm-4">
                     <form:errors path="password" class="text-red"/>

@@ -1,5 +1,6 @@
 package com.epam.apartmentbooking.config;
 
+import com.epam.apartmentbooking.interceptor.GuestSecurityInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -58,9 +59,15 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
         return localeResolver;
     }
 
+    @Bean
+    public GuestSecurityInterceptor guestSecurityInterceptor(){
+        return new GuestSecurityInterceptor();
+    }
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(localeChangeInterceptor());
+        registry.addInterceptor(guestSecurityInterceptor()).addPathPatterns("/user/**", "/apartment/**");
     }
 
     @Override
