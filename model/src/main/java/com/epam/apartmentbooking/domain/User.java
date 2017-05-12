@@ -1,15 +1,37 @@
 package com.epam.apartmentbooking.domain;
 
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 public class User {
     private Long id;
+
+    @NotNull
+    @Size(min = 4, max = 40, message = "{name.size.error}")
     private String login;
+
+    @NotNull
+    @Size(min = 5, max = 40, message = "{password.size.error}")
     private String password;
+
+    @NotEmpty(message = "{email.error}")
+    @Email(message = "{email.error}")
     private String email;
+
+    @NotNull
+    @Size(min = 2, max = 60, message = "{first.name.size.error}")
     private String name;
+
+    @NotNull
+    @Size(min = 2, max = 60, message = "{surname.size.error}")
     private String surname;
+
     private LocalDate creationDate;
+
     private int role;
 
     public User() {

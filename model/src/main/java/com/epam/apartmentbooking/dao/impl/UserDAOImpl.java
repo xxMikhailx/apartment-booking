@@ -3,6 +3,7 @@ package com.epam.apartmentbooking.dao.impl;
 import com.epam.apartmentbooking.dao.UserDAO;
 import com.epam.apartmentbooking.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -45,16 +46,24 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public User findEntityById(Long id) {
-        return jdbcTemplate.queryForObject(SQL_SELECT_USER_BY_ID,
-                new Object[]{id},
-                new UserMapper());
+        try {
+            return jdbcTemplate.queryForObject(SQL_SELECT_USER_BY_ID,
+                    new Object[]{id},
+                    new UserMapper());
+        } catch (DataAccessException e) {
+            return null;
+        }
     }
 
     @Override
     public Long findUserIdByEmail(String email) {
-        return jdbcTemplate.queryForObject(SQL_SELECT_USER_ID_BY_EMAIL,
-                new Object[]{email},
-                Long.class);
+        try {
+            return jdbcTemplate.queryForObject(SQL_SELECT_USER_ID_BY_EMAIL,
+                    new Object[]{email},
+                    Long.class);
+        } catch (DataAccessException e) {
+            return null;
+        }
     }
 
     @Override

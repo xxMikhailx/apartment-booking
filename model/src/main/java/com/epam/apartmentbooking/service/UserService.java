@@ -10,6 +10,8 @@ public interface UserService {
 
     User findEntityById(Long id);
 
+    User loginUser(User user);
+
     boolean restoreForgottenPassword(String email);
 
     boolean changeUserPassword(String password, Long id);
