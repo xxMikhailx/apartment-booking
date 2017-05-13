@@ -136,7 +136,7 @@ public class UserController {
         }
         if (userPassword.getNewPassword().equals(userPassword.getNewPasswordCopy()) && BCrypt.checkpw(userPassword.getOldPassword(), user.getPassword())) {
             if (userService.changeUserPassword(userPassword.getNewPassword(), user.getId())){
-                return "redirect:/home";
+                return "redirect:/";
             } else {
                 model.addAttribute("changePasswordError",
                         messageSource.getMessage("message.change.password.server.error", null, locale));
