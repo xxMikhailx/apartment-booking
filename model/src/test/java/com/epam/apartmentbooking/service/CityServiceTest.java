@@ -1,6 +1,6 @@
 package com.epam.apartmentbooking.service;
 
-import com.epam.apartmentbooking.dao.impl.CityDAOImpl;
+import com.epam.apartmentbooking.dao.impl.jdbc.CityDAOImpl;
 import com.epam.apartmentbooking.domain.City;
 import com.epam.apartmentbooking.domain.Country;
 import com.epam.apartmentbooking.service.impl.CityServiceImpl;

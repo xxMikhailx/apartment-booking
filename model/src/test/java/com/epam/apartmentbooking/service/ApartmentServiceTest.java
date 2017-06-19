@@ -1,6 +1,6 @@
 package com.epam.apartmentbooking.service;
 
-import com.epam.apartmentbooking.dao.impl.ApartmentDAOImpl;
+import com.epam.apartmentbooking.dao.impl.jdbc.ApartmentDAOImpl;
 import com.epam.apartmentbooking.domain.*;
 import com.epam.apartmentbooking.service.impl.ApartmentServiceImpl;
 import org.junit.Before;

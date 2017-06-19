@@ -1,8 +1,22 @@
 package com.epam.apartmentbooking.domain;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "CITIES")
 public class City {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "CITIES_SEQ")
+    @Column(name = "CT_ID_PK")
     private Long id;
+
+    @Column(name = "CT_TITLE")
     private String title;
+
+    @ManyToOne
+    @JoinColumn(name = "CT_COUNTRY_ID", referencedColumnName = "CN_ID_PK")
     private Country country;
 
     public City() {

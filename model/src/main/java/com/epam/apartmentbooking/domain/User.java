@@ -3,35 +3,50 @@ package com.epam.apartmentbooking.domain;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
+@Entity
+@Table(name = "USERS")
 public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "USERS_SEQ")
+    @Column(name = "US_ID_PK")
     private Long id;
 
     @NotNull
     @Size(min = 4, max = 40, message = "{name.size.error}")
+    @Column(name = "US_LOGIN", unique = true)
     private String login;
 
     @NotNull
     @Size(min = 5, max = 40, message = "{password.size.error}")
+    @Column(name = "US_PASSWORD", length = 60)
     private String password;
 
     @NotEmpty(message = "{email.error}")
     @Email(message = "{email.error}")
+    @Column(name = "US_EMAIL", unique = true)
     private String email;
 
     @NotNull
     @Size(min = 2, max = 60, message = "{first.name.size.error}")
+    @Column(name = "US_NAME")
     private String name;
 
     @NotNull
     @Size(min = 2, max = 60, message = "{surname.size.error}")
+    @Column(name = "US_SURNAME")
     private String surname;
 
+    @Column(name = "US_CREATION_DATE")
     private LocalDate creationDate;
 
+    @Column(name = "US_ROLE")
     private int role;
 
     public User() {

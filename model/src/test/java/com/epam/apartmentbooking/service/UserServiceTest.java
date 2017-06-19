@@ -1,6 +1,6 @@
 package com.epam.apartmentbooking.service;
 
-import com.epam.apartmentbooking.dao.impl.UserDAOImpl;
+import com.epam.apartmentbooking.dao.impl.jdbc.UserDAOImpl;
 import com.epam.apartmentbooking.domain.User;
 import com.epam.apartmentbooking.service.impl.UserServiceImpl;
 import com.epam.apartmentbooking.util.MailUtil;
