@@ -5,13 +5,12 @@ import com.epam.apartmentbooking.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-@Repository("apartmentDAO")
+//@Repository("apartmentDAO")
 public class ApartmentHibernateDAOImpl implements ApartmentDAO {
 
     @Autowired
@@ -82,7 +81,7 @@ public class ApartmentHibernateDAOImpl implements ApartmentDAO {
     @Override
     public boolean create(Apartment apartment) {
         return jdbcTemplate.update(SQL_CREATE_APARTMENT,
-                apartment.getIdOwner(),
+//                apartment.getIdOwner(),
                 apartment.getTitle(),
                 apartment.getDescription(),
                 apartment.getApartmentType().toString(),
@@ -97,7 +96,7 @@ public class ApartmentHibernateDAOImpl implements ApartmentDAO {
     @Override
     public boolean update(Apartment apartment) {
         return jdbcTemplate.update(SQL_UPDATE_APARTMENT_BY_ID,
-                apartment.getIdOwner(),
+//                apartment.getIdOwner(),
                 apartment.getTitle(),
                 apartment.getDescription(),
                 apartment.getApartmentType().toString(),
@@ -115,7 +114,7 @@ public class ApartmentHibernateDAOImpl implements ApartmentDAO {
         public Apartment mapRow(ResultSet rs, int rowNum) throws SQLException {
             Apartment apartment = new Apartment();
             apartment.setId(rs.getLong(COLUMN_ID));
-            apartment.setIdOwner(rs.getLong(COLUMN_OWNER_ID));
+//            apartment.setIdOwner(rs.getLong(COLUMN_OWNER_ID));
             apartment.setTitle(rs.getString(COLUMN_TITLE));
             apartment.setDescription(rs.getString(COLUMN_DESCRIPTION));
             apartment.setApartmentType(ApartmentType.valueOf(rs.getString(COLUMN_TYPE)));

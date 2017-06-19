@@ -12,6 +12,8 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +37,16 @@ public class ApartmentServiceTest {
     public void doBefore(){
         testApartment = new Apartment();
         testApartment.setId(1L);
-        testApartment.setIdOwner(1L);
+        User user = new User();
+        user.setId(1L);
+        user.setLogin("lbutler0");
+        user.setPassword("$2a$10$8jTNJqwX/jaJehssYn8HUO5uOhayAuVDTR5ZQrKu3EY5HYrgX1Z3W");
+        user.setEmail("lbutler0@purevolume.com");
+        user.setName("Laura");
+        user.setSurname("Butler");
+        user.setCreationDate(LocalDate.of(2016, Month.JULY, 28));
+        user.setRole(3);
+        testApartment.setOwner(user);
         testApartment.setTitle("Sonsing");
         testApartment.setDescription("In hac habitasse platea dictumst.");
         testApartment.setApartmentType(ApartmentType.FLAT);
@@ -55,7 +66,16 @@ public class ApartmentServiceTest {
 
         Apartment testApartment2 = new Apartment();
         testApartment2.setId(2L);
-        testApartment2.setIdOwner(2L);
+        User user2 = new User();
+        user2.setId(2L);
+        user2.setLogin("lbutler02");
+        user2.setPassword("$2a$10$8jTNJqwX/jaJehssYn8HUO5uOhayAuVDTR5ZQrKu3EY5HYrgX1Z3W");
+        user2.setEmail("lbutler02@purevolume.com");
+        user2.setName("Laura2");
+        user2.setSurname("Butler2");
+        user2.setCreationDate(LocalDate.of(2016, Month.JULY, 28));
+        user2.setRole(2);
+        testApartment2.setOwner(user);
         testApartment2.setTitle("Sonsing2");
         testApartment2.setDescription("In hac habitasse platea dictumst.2");
         testApartment2.setApartmentType(ApartmentType.ROOM);

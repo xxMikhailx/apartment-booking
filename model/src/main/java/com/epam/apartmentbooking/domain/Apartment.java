@@ -8,15 +8,14 @@ import java.math.BigDecimal;
 public class Apartment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "APARTMENTS_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "APARTMENTS_SEQ")
+    @SequenceGenerator(name = "APARTMENTS_SEQ", sequenceName = "APARTMENTS_SEQ")
     @Column(name = "AP_ID_PK")
     private Long id;
 
-    // TODO: 6/19/2017 Fix relation problem
     @ManyToOne
     @JoinColumn(name = "AP_OWNER_ID", referencedColumnName = "US_ID_PK")
-    private Long idOwner;
+    private User owner;
 
     @Column(name = "AP_TITLE")
     private String title;
@@ -51,9 +50,9 @@ public class Apartment {
     public Apartment() {
     }
 
-    public Apartment(Long id, Long idOwner, String title, String description, ApartmentType apartmentType, BigDecimal price, int maxGuestNumber, int bedNumber, ApartmentStatus apartmentStatus, String address, City city) {
+    public Apartment(Long id, User owner, String title, String description, ApartmentType apartmentType, BigDecimal price, int maxGuestNumber, int bedNumber, ApartmentStatus apartmentStatus, String address, City city) {
         this.id = id;
-        this.idOwner = idOwner;
+        this.owner = owner;
         this.title = title;
         this.description = description;
         this.apartmentType = apartmentType;
@@ -73,12 +72,12 @@ public class Apartment {
         this.id = id;
     }
 
-    public Long getIdOwner() {
-        return idOwner;
+    public User getOwner() {
+        return owner;
     }
 
-    public void setIdOwner(Long idOwner) {
-        this.idOwner = idOwner;
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 
     public String getTitle() {

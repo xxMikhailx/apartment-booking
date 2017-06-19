@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Repository("apartmentDAO")
@@ -18,7 +20,6 @@ public class ApartmentDAOImpl implements ApartmentDAO {
     private JdbcTemplate jdbcTemplate;
 
     private static final String COLUMN_ID = "AP_ID_PK";
-    private static final String COLUMN_OWNER_ID = "AP_OWNER_ID";
     private static final String COLUMN_TITLE = "AP_TITLE";
     private static final String COLUMN_DESCRIPTION = "AP_DESCRIPTION";
     private static final String COLUMN_TYPE = "AP_TYPE";
@@ -27,15 +28,28 @@ public class ApartmentDAOImpl implements ApartmentDAO {
     private static final String COLUMN_BED_NUMBER = "AP_BED_NUMBER";
     private static final String COLUMN_STATUS = "AP_STATUS";
     private static final String COLUMN_ADDRESS = "AP_ADDRESS";
+
+    private static final String COLUMN_USER_ID = "AP_OWNER_ID";
+    private static final String COLUMN_LOGIN = "US_LOGIN";
+    private static final String COLUMN_PASSWORD = "US_PASSWORD";
+    private static final String COLUMN_EMAIL = "US_EMAIL";
+    private static final String COLUMN_NAME = "US_NAME";
+    private static final String COLUMN_SURNAME = "US_SURNAME";
+    private static final String COLUMN_CREATION_DATE = "US_CREATION_DATE";
+    private static final String COLUMN_ROLE = "US_ROLE";
+
     private static final String COLUMN_CITY_ID = "AP_CITY_ID";
     private static final String COLUMN_CITY_TITLE = "CT_TITLE";
+
     private static final String COLUMN_COUNTRY_ID = "CT_COUNTRY_ID";
     private static final String COLUMN_COUNTRY_TITLE = "CN_TITLE";
 
-    private static final String SQL_SELECT_ALL_AVAILABLE_APARTMENTS = "SELECT AP_ID_PK,AP_OWNER_ID,AP_TITLE,AP_DESCRIPTION,AP_TYPE,AP_PRICE,AP_MAX_GUEST_NUMBER,AP_BED_NUMBER,AP_STATUS,AP_ADDRESS,AP_CITY_ID,CT_TITLE,CT_COUNTRY_ID,CN_TITLE FROM APARTMENTS JOIN CITIES ON (APARTMENTS.AP_CITY_ID = CITIES.CT_ID_PK) JOIN COUNTRIES ON (CITIES.CT_COUNTRY_ID = COUNTRIES.CN_ID_PK) WHERE AP_STATUS = ? ORDER BY AP_ID_PK";
-    private static final String SQL_SELECT_ALL_APARTMENTS = "SELECT AP_ID_PK,AP_OWNER_ID,AP_TITLE,AP_DESCRIPTION,AP_TYPE,AP_PRICE,AP_MAX_GUEST_NUMBER,AP_BED_NUMBER,AP_STATUS,AP_ADDRESS,AP_CITY_ID,CT_TITLE,CT_COUNTRY_ID,CN_TITLE FROM APARTMENTS JOIN CITIES ON (APARTMENTS.AP_CITY_ID = CITIES.CT_ID_PK) JOIN COUNTRIES ON (CITIES.CT_COUNTRY_ID = COUNTRIES.CN_ID_PK) ORDER BY AP_ID_PK";
-    private static final String SQL_SELECT_APARTMENT_BY_ID = "SELECT AP_ID_PK,AP_OWNER_ID,AP_TITLE,AP_DESCRIPTION,AP_TYPE,AP_PRICE,AP_MAX_GUEST_NUMBER,AP_BED_NUMBER,AP_STATUS,AP_ADDRESS,AP_CITY_ID,CT_TITLE,CT_COUNTRY_ID,CN_TITLE FROM APARTMENTS JOIN CITIES ON (APARTMENTS.AP_CITY_ID = CITIES.CT_ID_PK) JOIN COUNTRIES ON (CITIES.CT_COUNTRY_ID = COUNTRIES.CN_ID_PK) WHERE AP_ID_PK = ?";
-    private static final String SQL_SELECT_ALL_APARTMENTS_BY_CRITERIA = "SELECT AP_ID_PK,AP_OWNER_ID,AP_TITLE,AP_DESCRIPTION,AP_TYPE,AP_PRICE,AP_MAX_GUEST_NUMBER,AP_BED_NUMBER,AP_STATUS,AP_ADDRESS,AP_CITY_ID,CT_TITLE,CT_COUNTRY_ID,CN_TITLE FROM APARTMENTS LEFT JOIN CITIES ON (APARTMENTS.AP_CITY_ID = CITIES.CT_ID_PK) LEFT JOIN COUNTRIES ON (CITIES.CT_COUNTRY_ID = COUNTRIES.CN_ID_PK) WHERE (AP_TITLE LIKE ? OR ? IS NULL) AND (AP_TYPE=? OR ? IS NULL ) AND (AP_PRICE >= ? OR ? IS NULL) AND (AP_PRICE <= ? OR ? IS NULL) AND (AP_MAX_GUEST_NUMBER >= ? OR ? IS NULL) AND (AP_MAX_GUEST_NUMBER <= ? OR ? IS NULL) AND (AP_BED_NUMBER >= ? OR ? IS NULL) AND (AP_BED_NUMBER <= ? OR ? IS NULL) AND (AP_STATUS = ? OR ? IS NULL) AND (AP_ADDRESS LIKE ? OR ? IS NULL) AND (AP_CITY_ID = ? OR ? IS NULL) AND (CN_ID_PK = ? OR ? IS NULL) ORDER BY AP_ID_PK";
+    private static final String DATE_TIME_PATTERN = "uuuu-MM-d HH:mm:ss.S";
+
+    private static final String SQL_SELECT_ALL_AVAILABLE_APARTMENTS = "SELECT AP_ID_PK,AP_OWNER_ID,US_LOGIN,US_PASSWORD,US_EMAIL,US_NAME,US_SURNAME,US_CREATION_DATE,US_ROLE,AP_TITLE,AP_DESCRIPTION,AP_TYPE,AP_PRICE,AP_MAX_GUEST_NUMBER,AP_BED_NUMBER,AP_STATUS,AP_ADDRESS,AP_CITY_ID,CT_TITLE,CT_COUNTRY_ID,CN_TITLE FROM APARTMENTS JOIN USERS ON (APARTMENTS.AP_OWNER_ID = USERS.US_ID_PK) JOIN CITIES ON (APARTMENTS.AP_CITY_ID = CITIES.CT_ID_PK) JOIN COUNTRIES ON (CITIES.CT_COUNTRY_ID = COUNTRIES.CN_ID_PK) WHERE AP_STATUS = ? ORDER BY AP_ID_PK";
+    private static final String SQL_SELECT_ALL_APARTMENTS = "SELECT AP_ID_PK,AP_OWNER_ID,US_LOGIN,US_PASSWORD,US_EMAIL,US_NAME,US_SURNAME,US_CREATION_DATE,US_ROLE,AP_TITLE,AP_DESCRIPTION,AP_TYPE,AP_PRICE,AP_MAX_GUEST_NUMBER,AP_BED_NUMBER,AP_STATUS,AP_ADDRESS,AP_CITY_ID,CT_TITLE,CT_COUNTRY_ID,CN_TITLE FROM APARTMENTS JOIN USERS ON (APARTMENTS.AP_OWNER_ID = USERS.US_ID_PK) JOIN CITIES ON (APARTMENTS.AP_CITY_ID = CITIES.CT_ID_PK) JOIN COUNTRIES ON (CITIES.CT_COUNTRY_ID = COUNTRIES.CN_ID_PK) ORDER BY AP_ID_PK";
+    private static final String SQL_SELECT_APARTMENT_BY_ID = "SELECT AP_ID_PK,AP_OWNER_ID,US_LOGIN,US_PASSWORD,US_EMAIL,US_NAME,US_SURNAME,US_CREATION_DATE,US_ROLE,AP_TITLE,AP_DESCRIPTION,AP_TYPE,AP_PRICE,AP_MAX_GUEST_NUMBER,AP_BED_NUMBER,AP_STATUS,AP_ADDRESS,AP_CITY_ID,CT_TITLE,CT_COUNTRY_ID,CN_TITLE FROM APARTMENTS JOIN USERS ON (APARTMENTS.AP_OWNER_ID = USERS.US_ID_PK) JOIN CITIES ON (APARTMENTS.AP_CITY_ID = CITIES.CT_ID_PK) JOIN COUNTRIES ON (CITIES.CT_COUNTRY_ID = COUNTRIES.CN_ID_PK) WHERE AP_ID_PK = ?";
+    private static final String SQL_SELECT_ALL_APARTMENTS_BY_CRITERIA = "SELECT AP_ID_PK,AP_OWNER_ID,US_LOGIN,US_PASSWORD,US_EMAIL,US_NAME,US_SURNAME,US_CREATION_DATE,US_ROLE,AP_TITLE,AP_DESCRIPTION,AP_TYPE,AP_PRICE,AP_MAX_GUEST_NUMBER,AP_BED_NUMBER,AP_STATUS,AP_ADDRESS,AP_CITY_ID,CT_TITLE,CT_COUNTRY_ID,CN_TITLE FROM APARTMENTS LEFT JOIN USERS ON (APARTMENTS.AP_OWNER_ID = USERS.US_ID_PK) LEFT JOIN CITIES ON (APARTMENTS.AP_CITY_ID = CITIES.CT_ID_PK) LEFT JOIN COUNTRIES ON (CITIES.CT_COUNTRY_ID = COUNTRIES.CN_ID_PK) WHERE (AP_TITLE LIKE ? OR ? IS NULL) AND (AP_TYPE=? OR ? IS NULL ) AND (AP_PRICE >= ? OR ? IS NULL) AND (AP_PRICE <= ? OR ? IS NULL) AND (AP_MAX_GUEST_NUMBER >= ? OR ? IS NULL) AND (AP_MAX_GUEST_NUMBER <= ? OR ? IS NULL) AND (AP_BED_NUMBER >= ? OR ? IS NULL) AND (AP_BED_NUMBER <= ? OR ? IS NULL) AND (AP_STATUS = ? OR ? IS NULL) AND (AP_ADDRESS LIKE ? OR ? IS NULL) AND (AP_CITY_ID = ? OR ? IS NULL) AND (CN_ID_PK = ? OR ? IS NULL) ORDER BY AP_ID_PK";
     private static final String SQL_CREATE_APARTMENT = "INSERT INTO APARTMENTS (AP_OWNER_ID,AP_TITLE,AP_DESCRIPTION,AP_TYPE,AP_PRICE,AP_MAX_GUEST_NUMBER,AP_BED_NUMBER,AP_STATUS,AP_ADDRESS,AP_CITY_ID) VALUES (?,?,?,?,?,?,?,?,?,?)";
     private static final String SQL_UPDATE_APARTMENT_BY_ID = "UPDATE APARTMENTS SET AP_OWNER_ID = ?,AP_TITLE = ?,AP_DESCRIPTION = ?,AP_TYPE = ?,AP_PRICE = ?,AP_MAX_GUEST_NUMBER = ?,AP_BED_NUMBER = ?,AP_STATUS = ?,AP_ADDRESS = ?,AP_CITY_ID = ? WHERE AP_ID_PK = ?";
     private static final String SQL_DELETE_APARTMENT = "DELETE FROM APARTMENTS WHERE AP_ID_PK = ?";
@@ -82,7 +96,7 @@ public class ApartmentDAOImpl implements ApartmentDAO {
     @Override
     public boolean create(Apartment apartment) {
         return jdbcTemplate.update(SQL_CREATE_APARTMENT,
-                apartment.getIdOwner(),
+                apartment.getOwner().getId(),
                 apartment.getTitle(),
                 apartment.getDescription(),
                 apartment.getApartmentType().toString(),
@@ -97,7 +111,7 @@ public class ApartmentDAOImpl implements ApartmentDAO {
     @Override
     public boolean update(Apartment apartment) {
         return jdbcTemplate.update(SQL_UPDATE_APARTMENT_BY_ID,
-                apartment.getIdOwner(),
+                apartment.getOwner().getId(),
                 apartment.getTitle(),
                 apartment.getDescription(),
                 apartment.getApartmentType().toString(),
@@ -115,7 +129,16 @@ public class ApartmentDAOImpl implements ApartmentDAO {
         public Apartment mapRow(ResultSet rs, int rowNum) throws SQLException {
             Apartment apartment = new Apartment();
             apartment.setId(rs.getLong(COLUMN_ID));
-            apartment.setIdOwner(rs.getLong(COLUMN_OWNER_ID));
+            User user = new User();
+            user.setId(rs.getLong(COLUMN_USER_ID));
+            user.setLogin(rs.getString(COLUMN_LOGIN));
+            user.setPassword(rs.getString(COLUMN_PASSWORD));
+            user.setEmail(rs.getString(COLUMN_EMAIL));
+            user.setName(rs.getString(COLUMN_NAME));
+            user.setSurname(rs.getString(COLUMN_SURNAME));
+            user.setCreationDate(LocalDate.parse(rs.getString(COLUMN_CREATION_DATE), DateTimeFormatter.ofPattern(DATE_TIME_PATTERN)));
+            user.setRole(rs.getInt(COLUMN_ROLE));
+            apartment.setOwner(user);
             apartment.setTitle(rs.getString(COLUMN_TITLE));
             apartment.setDescription(rs.getString(COLUMN_DESCRIPTION));
             apartment.setApartmentType(ApartmentType.valueOf(rs.getString(COLUMN_TYPE)));

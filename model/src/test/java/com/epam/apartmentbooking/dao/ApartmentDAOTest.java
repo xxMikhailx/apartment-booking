@@ -19,6 +19,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -92,7 +94,16 @@ public class ApartmentDAOTest {
     private Apartment createTestApartment(){
         Apartment apartment = new Apartment();
         apartment.setId(1L);
-        apartment.setIdOwner(1L);
+        User user = new User();
+        user.setId(1L);
+        user.setLogin("lbutler0");
+        user.setPassword("$2a$10$8jTNJqwX/jaJehssYn8HUO5uOhayAuVDTR5ZQrKu3EY5HYrgX1Z3W");
+        user.setEmail("lbutler0@purevolume.com");
+        user.setName("Laura");
+        user.setSurname("Butler");
+        user.setCreationDate(LocalDate.of(2016, Month.JULY, 28));
+        user.setRole(3);
+        apartment.setOwner(user);
         apartment.setTitle("Sonsing");
         apartment.setDescription("In hac habitasse platea dictumst.");
         apartment.setApartmentType(ApartmentType.FLAT);
