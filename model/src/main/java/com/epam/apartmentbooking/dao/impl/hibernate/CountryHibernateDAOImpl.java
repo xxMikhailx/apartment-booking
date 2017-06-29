@@ -5,11 +5,15 @@ import com.epam.apartmentbooking.domain.Country;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
-//@Repository("countryDAO")
+@Repository("countryDAO")
 @Transactional(readOnly = true)
 public class CountryHibernateDAOImpl implements CountryDAO {
 
@@ -22,7 +26,11 @@ public class CountryHibernateDAOImpl implements CountryDAO {
 
     @Override
     public List<Country> findAllCountries() {
-        return getSession().createQuery(getSession().getCriteriaBuilder().createQuery(Country.class)).getResultList();
+        CriteriaBuilder criteriaBuilder = getSession().getCriteriaBuilder();
+
+        CriteriaQuery<Country> criteriaQuery = criteriaBuilder.createQuery(Country.class);
+        Root<Country> countryRoot = criteriaQuery.from(Country.class);
+        return getSession().createQuery(criteriaQuery.orderBy(criteriaBuilder.asc(countryRoot.get("id")))).getResultList();
     }
 
     @Override

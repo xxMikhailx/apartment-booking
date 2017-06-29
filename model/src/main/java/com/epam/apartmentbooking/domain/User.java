@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "USERS")
+@Table(name = "USERS", schema = "TEST")
 public class User {
 
     @Id

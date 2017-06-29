@@ -5,11 +5,15 @@ import com.epam.apartmentbooking.domain.City;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
-//@Repository("cityDAO")
+@Repository("cityDAO")
 @Transactional(readOnly = true)
 public class CityHibernateDAOImpl implements CityDAO {
 
@@ -22,7 +26,11 @@ public class CityHibernateDAOImpl implements CityDAO {
 
     @Override
     public List<City> findAllCities() {
-        return getSession().createQuery(getSession().getCriteriaBuilder().createQuery(City.class)).getResultList();
+        CriteriaBuilder criteriaBuilder = getSession().getCriteriaBuilder();
+
+        CriteriaQuery<City> criteriaQuery = criteriaBuilder.createQuery(City.class);
+        Root<City> cityRoot = criteriaQuery.from(City.class);
+        return getSession().createQuery(criteriaQuery.orderBy(criteriaBuilder.asc(cityRoot.get("id")))).getResultList();
     }
 
     @Override

@@ -5,15 +5,15 @@ import com.epam.apartmentbooking.domain.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import java.time.LocalDate;
 import java.util.List;
 
-//@Repository("userDAO")
+@Repository("userDAO")
 @Transactional(readOnly = true)
 public class UserHibernateDAOImpl implements UserDAO {
 
@@ -26,7 +26,11 @@ public class UserHibernateDAOImpl implements UserDAO {
 
     @Override
     public List<User> findAllUsers(){
-        return getSession().createQuery(getSession().getCriteriaBuilder().createQuery(User.class)).getResultList();
+        CriteriaBuilder criteriaBuilder = getSession().getCriteriaBuilder();
+
+        CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
+        Root<User> userRoot = criteriaQuery.from(User.class);
+        return getSession().createQuery(criteriaQuery.orderBy(criteriaBuilder.asc(userRoot.get("id")))).getResultList();
     }
 
     @Override
@@ -46,36 +50,36 @@ public class UserHibernateDAOImpl implements UserDAO {
     }
 
     @Override
+    @Transactional(readOnly = false)
     public boolean changeUserPassword(String password, Long id){
-        return jdbcTemplate.update(SQL_UPDATE_USER_PASSWORD, password, id) > 0;
+        User user = getSession().get(User.class, id);
+        user.setPassword(password);
+        getSession().update(user);
+        return true;
     }
 
     @Override
+    @Transactional(readOnly = false)
     public boolean remove(Long id) {
-        return jdbcTemplate.update(SQL_DELETE_USER, id) > 0;
+        Object persistentInstance = getSession().load(User.class, id);
+        if (persistentInstance != null) {
+            getSession().delete(persistentInstance);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
+    @Transactional(readOnly = false)
     public boolean create(User user) {
-        return jdbcTemplate.update(SQL_CREATE_USER,
-                user.getLogin(),
-                user.getPassword(),
-                user.getEmail(),
-                user.getName(),
-                user.getSurname(),
-                LocalDate.now().toString(),
-                user.getRole()) > 0;
+        return (Long) getSession().save(user) > 0;
     }
 
     @Override
+    @Transactional(readOnly = false)
     public boolean update(User user) {
-        return jdbcTemplate.update(SQL_UPDATE_USER_BY_ID,
-                user.getLogin(),
-                user.getPassword(),
-                user.getEmail(),
-                user.getName(),
-                user.getSurname(),
-                user.getRole(),
-                user.getId()) > 0;
+        getSession().update(user);
+        return true;
     }
 }

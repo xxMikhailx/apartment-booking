@@ -1,6 +1,6 @@
 package com.epam.apartmentbooking.dao;
 
-import com.epam.apartmentbooking.config.TestConfig;
+import com.epam.apartmentbooking.config.TestConfigHibernate;
 import com.epam.apartmentbooking.domain.*;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseOperation;
@@ -24,7 +24,7 @@ import java.time.Month;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { TestConfig.class})
+@ContextConfiguration(classes = { TestConfigHibernate.class})
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
         DbUnitTestExecutionListener.class })
 public class ApartmentDAOTest {

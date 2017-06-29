@@ -2,136 +2,163 @@ package com.epam.apartmentbooking.dao.impl.hibernate;
 
 import com.epam.apartmentbooking.dao.ApartmentDAO;
 import com.epam.apartmentbooking.domain.*;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import javax.persistence.criteria.*;
 import java.util.List;
 
-//@Repository("apartmentDAO")
+@Repository("apartmentDAO")
+@Transactional(readOnly = true)
 public class ApartmentHibernateDAOImpl implements ApartmentDAO {
 
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private SessionFactory sessionFactory;
 
-    private static final String COLUMN_ID = "AP_ID_PK";
-    private static final String COLUMN_OWNER_ID = "AP_OWNER_ID";
-    private static final String COLUMN_TITLE = "AP_TITLE";
-    private static final String COLUMN_DESCRIPTION = "AP_DESCRIPTION";
-    private static final String COLUMN_TYPE = "AP_TYPE";
-    private static final String COLUMN_PRICE = "AP_PRICE";
-    private static final String COLUMN_MAX_GUEST_NUMBER = "AP_MAX_GUEST_NUMBER";
-    private static final String COLUMN_BED_NUMBER = "AP_BED_NUMBER";
-    private static final String COLUMN_STATUS = "AP_STATUS";
-    private static final String COLUMN_ADDRESS = "AP_ADDRESS";
-    private static final String COLUMN_CITY_ID = "AP_CITY_ID";
-    private static final String COLUMN_CITY_TITLE = "CT_TITLE";
-    private static final String COLUMN_COUNTRY_ID = "CT_COUNTRY_ID";
-    private static final String COLUMN_COUNTRY_TITLE = "CN_TITLE";
-
-    private static final String SQL_SELECT_ALL_AVAILABLE_APARTMENTS = "SELECT AP_ID_PK,AP_OWNER_ID,AP_TITLE,AP_DESCRIPTION,AP_TYPE,AP_PRICE,AP_MAX_GUEST_NUMBER,AP_BED_NUMBER,AP_STATUS,AP_ADDRESS,AP_CITY_ID,CT_TITLE,CT_COUNTRY_ID,CN_TITLE FROM APARTMENTS JOIN CITIES ON (APARTMENTS.AP_CITY_ID = CITIES.CT_ID_PK) JOIN COUNTRIES ON (CITIES.CT_COUNTRY_ID = COUNTRIES.CN_ID_PK) WHERE AP_STATUS = ? ORDER BY AP_ID_PK";
-    private static final String SQL_SELECT_ALL_APARTMENTS = "SELECT AP_ID_PK,AP_OWNER_ID,AP_TITLE,AP_DESCRIPTION,AP_TYPE,AP_PRICE,AP_MAX_GUEST_NUMBER,AP_BED_NUMBER,AP_STATUS,AP_ADDRESS,AP_CITY_ID,CT_TITLE,CT_COUNTRY_ID,CN_TITLE FROM APARTMENTS JOIN CITIES ON (APARTMENTS.AP_CITY_ID = CITIES.CT_ID_PK) JOIN COUNTRIES ON (CITIES.CT_COUNTRY_ID = COUNTRIES.CN_ID_PK) ORDER BY AP_ID_PK";
-    private static final String SQL_SELECT_APARTMENT_BY_ID = "SELECT AP_ID_PK,AP_OWNER_ID,AP_TITLE,AP_DESCRIPTION,AP_TYPE,AP_PRICE,AP_MAX_GUEST_NUMBER,AP_BED_NUMBER,AP_STATUS,AP_ADDRESS,AP_CITY_ID,CT_TITLE,CT_COUNTRY_ID,CN_TITLE FROM APARTMENTS JOIN CITIES ON (APARTMENTS.AP_CITY_ID = CITIES.CT_ID_PK) JOIN COUNTRIES ON (CITIES.CT_COUNTRY_ID = COUNTRIES.CN_ID_PK) WHERE AP_ID_PK = ?";
-    private static final String SQL_SELECT_ALL_APARTMENTS_BY_CRITERIA = "SELECT AP_ID_PK,AP_OWNER_ID,AP_TITLE,AP_DESCRIPTION,AP_TYPE,AP_PRICE,AP_MAX_GUEST_NUMBER,AP_BED_NUMBER,AP_STATUS,AP_ADDRESS,AP_CITY_ID,CT_TITLE,CT_COUNTRY_ID,CN_TITLE FROM APARTMENTS LEFT JOIN CITIES ON (APARTMENTS.AP_CITY_ID = CITIES.CT_ID_PK) LEFT JOIN COUNTRIES ON (CITIES.CT_COUNTRY_ID = COUNTRIES.CN_ID_PK) WHERE (AP_TITLE LIKE ? OR ? IS NULL) AND (AP_TYPE=? OR ? IS NULL ) AND (AP_PRICE >= ? OR ? IS NULL) AND (AP_PRICE <= ? OR ? IS NULL) AND (AP_MAX_GUEST_NUMBER >= ? OR ? IS NULL) AND (AP_MAX_GUEST_NUMBER <= ? OR ? IS NULL) AND (AP_BED_NUMBER >= ? OR ? IS NULL) AND (AP_BED_NUMBER <= ? OR ? IS NULL) AND (AP_STATUS = ? OR ? IS NULL) AND (AP_ADDRESS LIKE ? OR ? IS NULL) AND (AP_CITY_ID = ? OR ? IS NULL) AND (CN_ID_PK = ? OR ? IS NULL) ORDER BY AP_ID_PK";
-    private static final String SQL_CREATE_APARTMENT = "INSERT INTO APARTMENTS (AP_OWNER_ID,AP_TITLE,AP_DESCRIPTION,AP_TYPE,AP_PRICE,AP_MAX_GUEST_NUMBER,AP_BED_NUMBER,AP_STATUS,AP_ADDRESS,AP_CITY_ID) VALUES (?,?,?,?,?,?,?,?,?,?)";
-    private static final String SQL_UPDATE_APARTMENT_BY_ID = "UPDATE APARTMENTS SET AP_OWNER_ID = ?,AP_TITLE = ?,AP_DESCRIPTION = ?,AP_TYPE = ?,AP_PRICE = ?,AP_MAX_GUEST_NUMBER = ?,AP_BED_NUMBER = ?,AP_STATUS = ?,AP_ADDRESS = ?,AP_CITY_ID = ? WHERE AP_ID_PK = ?";
-    private static final String SQL_DELETE_APARTMENT = "DELETE FROM APARTMENTS WHERE AP_ID_PK = ?";
+    protected Session getSession() {
+        return this.sessionFactory.getCurrentSession();
+    }
 
     @Override
     public List<Apartment> findAllAvailableApartments() {
-        return jdbcTemplate.query(SQL_SELECT_ALL_AVAILABLE_APARTMENTS, new Object[]{ApartmentStatus.AVAILABLE.toString()}, new ApartmentMapper());
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+
+        CriteriaQuery<Apartment> criteriaQuery = builder.createQuery(Apartment.class);
+        Root<Apartment> apartmentRoot = criteriaQuery.from(Apartment.class);
+        criteriaQuery.where(builder.equal(apartmentRoot.get("apartmentStatus"), ApartmentStatus.AVAILABLE))
+                .orderBy(builder.asc(apartmentRoot.get("id")));
+        return getSession().createQuery(criteriaQuery).getResultList();
     }
 
     @Override
     public List<Apartment> findAllApartments() {
-        return jdbcTemplate.query(SQL_SELECT_ALL_APARTMENTS, new ApartmentMapper());
+        CriteriaBuilder criteriaBuilder = getSession().getCriteriaBuilder();
+
+        CriteriaQuery<Apartment> criteriaQuery = criteriaBuilder.createQuery(Apartment.class);
+        Root<Apartment> apartmentRoot = criteriaQuery.from(Apartment.class);
+        return getSession().createQuery(criteriaQuery.orderBy(criteriaBuilder.asc(apartmentRoot.get("id")))).getResultList();
     }
 
     @Override
     public Apartment findEntityById(Long id) {
-        List<Apartment> apartments = jdbcTemplate.query(SQL_SELECT_APARTMENT_BY_ID, new Object[]{id}, new ApartmentMapper());
-        return apartments.isEmpty() ? null : apartments.get(0);
+        return getSession().get(Apartment.class, id);
     }
 
     @Override
     public List<Apartment> findAllApartmentsByCriteria(ApartmentCriteria criteria) {
-        return jdbcTemplate.query(SQL_SELECT_ALL_APARTMENTS_BY_CRITERIA,
-                new Object[]{criteria.getTitle(), criteria.getTitle(),
-                        criteria.getApartmentType()==null?null:criteria.getApartmentType().toString(), criteria.getApartmentType()==null?null:criteria.getApartmentType().toString(),
-                        criteria.getMinPrice(), criteria.getMinPrice(),
-                        criteria.getMaxPrice(), criteria.getMaxPrice(),
-                        criteria.getMinGuestNumber(), criteria.getMinGuestNumber(),
-                        criteria.getMaxGuestNumber(), criteria.getMaxGuestNumber(),
-                        criteria.getMinBedNumber(), criteria.getMinBedNumber(),
-                        criteria.getMaxBedNumber(), criteria.getMaxBedNumber(),
-                        criteria.getApartmentStatus()==null?null:criteria.getApartmentStatus().toString(), criteria.getApartmentStatus()==null?null:criteria.getApartmentStatus().toString(),
-                        criteria.getAddress(), criteria.getAddress(),
-                        criteria.getCityId(), criteria.getCityId(),
-                        criteria.getCountryId(), criteria.getCountryId()},
-                new ApartmentMapper());
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+
+        CriteriaQuery<Apartment> criteriaQuery = builder.createQuery(Apartment.class);
+        Root<Apartment> apartmentRoot = criteriaQuery.from(Apartment.class);
+        Root<City> cityRoot = criteriaQuery.from(City.class);
+        Root<Country> countryRoot = criteriaQuery.from(Country.class);
+
+        Predicate predicate = builder.conjunction();
+        predicate = addCriteriaEqual(criteria.getTitle(), "title", apartmentRoot, predicate);
+        System.out.println(criteria.getApartmentType());
+        predicate = addCriteriaEqualEnum(criteria.getApartmentType(), "apartmentType", apartmentRoot, predicate);
+        predicate = addCriteriaEqual(criteria.getApartmentStatus(), "apartmentStatus", apartmentRoot, predicate);
+        predicate = addCriteriaEqual(criteria.getCityId(), "id", cityRoot, predicate);
+        predicate = addCriteriaEqual(criteria.getCountryId(), "id", countryRoot, predicate);
+        predicate = addCriteriaGreaterThan(criteria.getMinPrice(), "price", apartmentRoot, predicate);
+        predicate = addCriteriaGreaterThan(criteria.getMinGuestNumber(), "maxGuestNumber", apartmentRoot, predicate);
+        predicate = addCriteriaGreaterThan(criteria.getMinBedNumber(), "bedNumber", apartmentRoot, predicate);
+        predicate = addCriteriaLowerThan(criteria.getMaxPrice(), "price", apartmentRoot, predicate);
+        predicate = addCriteriaLowerThan(criteria.getMaxGuestNumber(), "maxGuestNumber", apartmentRoot, predicate);
+        predicate = addCriteriaLowerThan(criteria.getMaxBedNumber(), "bedNumber", apartmentRoot, predicate);
+        predicate = addCriteriaLike(criteria.getAddress(), "address", apartmentRoot, predicate);
+
+        criteriaQuery = criteriaQuery.select(apartmentRoot).where(predicate).orderBy(builder.asc(apartmentRoot.get("id")));
+
+        return getSession().createQuery(criteriaQuery).getResultList();
     }
 
-    @Override
-    public boolean remove(Long id) {
-        return jdbcTemplate.update(SQL_DELETE_APARTMENT, id) > 0;
-    }
-
-    @Override
-    public boolean create(Apartment apartment) {
-        return jdbcTemplate.update(SQL_CREATE_APARTMENT,
-//                apartment.getIdOwner(),
-                apartment.getTitle(),
-                apartment.getDescription(),
-                apartment.getApartmentType().toString(),
-                apartment.getPrice(),
-                apartment.getMaxGuestNumber(),
-                apartment.getBedNumber(),
-                apartment.getApartmentStatus().toString(),
-                apartment.getAddress(),
-                apartment.getCity().getId()) > 0;
-    }
-
-    @Override
-    public boolean update(Apartment apartment) {
-        return jdbcTemplate.update(SQL_UPDATE_APARTMENT_BY_ID,
-//                apartment.getIdOwner(),
-                apartment.getTitle(),
-                apartment.getDescription(),
-                apartment.getApartmentType().toString(),
-                apartment.getPrice(),
-                apartment.getMaxGuestNumber(),
-                apartment.getBedNumber(),
-                apartment.getApartmentStatus().toString(),
-                apartment.getAddress(),
-                apartment.getCity().getId(),
-                apartment.getId()) > 0;
-    }
-
-    private static final class ApartmentMapper implements RowMapper<Apartment> {
-
-        public Apartment mapRow(ResultSet rs, int rowNum) throws SQLException {
-            Apartment apartment = new Apartment();
-            apartment.setId(rs.getLong(COLUMN_ID));
-//            apartment.setIdOwner(rs.getLong(COLUMN_OWNER_ID));
-            apartment.setTitle(rs.getString(COLUMN_TITLE));
-            apartment.setDescription(rs.getString(COLUMN_DESCRIPTION));
-            apartment.setApartmentType(ApartmentType.valueOf(rs.getString(COLUMN_TYPE)));
-            apartment.setPrice(rs.getBigDecimal(COLUMN_PRICE));
-            apartment.setMaxGuestNumber(rs.getInt(COLUMN_MAX_GUEST_NUMBER));
-            apartment.setBedNumber(rs.getInt(COLUMN_BED_NUMBER));
-            apartment.setApartmentStatus(ApartmentStatus.valueOf(rs.getString(COLUMN_STATUS)));
-            apartment.setAddress(rs.getString(COLUMN_ADDRESS));
-            City city = new City();
-            city.setId(rs.getLong(COLUMN_CITY_ID));
-            city.setTitle(rs.getString(COLUMN_CITY_TITLE));
-            Country country = new Country();
-            country.setId(rs.getLong(COLUMN_COUNTRY_ID));
-            country.setTitle(rs.getString(COLUMN_COUNTRY_TITLE));
-            city.setCountry(country);
-            apartment.setCity(city);
-            return apartment;
+    private Predicate addCriteriaEqual(Object fieldToEqual, String fieldName, Root rootObj, Predicate predicate){
+        CriteriaBuilder criteriaBuilder = getSession().getCriteriaBuilder();
+        if (fieldToEqual != null) {
+            predicate = criteriaBuilder.and(
+                    predicate,
+                    criteriaBuilder.equal(rootObj.get(fieldName), fieldToEqual));
+        } else {
+            predicate = criteriaBuilder.and(predicate, criteriaBuilder.isNull(rootObj.get(fieldName)));
         }
+        return predicate;
+    }
+
+    // TODO: 6/21/2017 remove commented code
+    private Predicate addCriteriaEqualEnum(Enum fieldToEqual, String fieldName, Root rootObj, Predicate predicate){
+        CriteriaBuilder criteriaBuilder = getSession().getCriteriaBuilder();
+        if (fieldToEqual != null) {
+            predicate = criteriaBuilder.and(
+                    predicate,
+                    criteriaBuilder.equal(rootObj.get(fieldName), fieldToEqual));
+        } else {
+            predicate = criteriaBuilder.and(predicate, criteriaBuilder.isNull(rootObj.get(fieldName)));
+        }
+        return predicate;
+    }
+
+    private Predicate addCriteriaGreaterThan(Number numberToEqual, String fieldName, Root rootObj, Predicate predicate){
+        CriteriaBuilder criteriaBuilder = getSession().getCriteriaBuilder();
+        if (numberToEqual != null) {
+            predicate = criteriaBuilder.and(
+                    predicate,
+                    criteriaBuilder.ge(rootObj.get(fieldName), numberToEqual));
+        } else {
+            predicate = criteriaBuilder.and(predicate, criteriaBuilder.isNull(rootObj.get(fieldName)));
+        }
+        return predicate;
+    }
+
+    private Predicate addCriteriaLowerThan(Number numberToEqual, String fieldName, Root rootObj, Predicate predicate){
+        CriteriaBuilder criteriaBuilder = getSession().getCriteriaBuilder();
+        if (numberToEqual != null) {
+            predicate = criteriaBuilder.and(
+                    predicate,
+                    criteriaBuilder.le(rootObj.get(fieldName), numberToEqual));
+        } else {
+            predicate = criteriaBuilder.and(predicate, criteriaBuilder.isNull(rootObj.get(fieldName)));
+        }
+        return predicate;
+    }
+
+    private Predicate addCriteriaLike(String fieldToEqual, String fieldName, Root rootObj, Predicate predicate){
+        CriteriaBuilder criteriaBuilder = getSession().getCriteriaBuilder();
+        if (fieldToEqual != null) {
+            predicate = criteriaBuilder.and(
+                    predicate,
+                    criteriaBuilder.like(rootObj.get(fieldName), fieldToEqual));
+        } else {
+            predicate = criteriaBuilder.and(predicate, criteriaBuilder.isNull(rootObj.get(fieldName)));
+        }
+        return predicate;
+    }
+
+    @Override
+    @Transactional(readOnly = false)
+    public boolean remove(Long id) {
+        Object persistentInstance = getSession().load(Apartment.class, id);
+        if (persistentInstance != null) {
+            getSession().delete(persistentInstance);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    @Transactional(readOnly = false)
+    public boolean create(Apartment apartment) {
+        return (Long) getSession().save(apartment) > 0;
+    }
+
+    @Override
+    @Transactional(readOnly = false)
+    public boolean update(Apartment apartment) {
+        getSession().update(apartment);
+        return true;
     }
 }

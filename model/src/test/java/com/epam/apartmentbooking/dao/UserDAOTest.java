@@ -1,6 +1,6 @@
 package com.epam.apartmentbooking.dao;
 
-import com.epam.apartmentbooking.config.TestConfig;
+import com.epam.apartmentbooking.config.TestConfigHibernate;
 import com.epam.apartmentbooking.domain.User;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseOperation;
@@ -25,7 +25,7 @@ import java.time.Month;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { TestConfig.class})
+@ContextConfiguration(classes = { TestConfigHibernate.class})
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
         DbUnitTestExecutionListener.class })
 public class UserDAOTest {
@@ -109,7 +109,7 @@ public class UserDAOTest {
         user.setEmail("testEmail@test.com");
         user.setName("testName");
         user.setSurname("testSurname");
-        user.setCreationDate(LocalDate.of(2017, Month.APRIL, 8));
+        user.setCreationDate(LocalDate.of(2016, Month.JULY, 28));
         user.setRole(1);
         return user;
     }
