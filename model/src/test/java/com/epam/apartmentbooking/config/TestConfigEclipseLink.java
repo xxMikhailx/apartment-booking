@@ -38,6 +38,7 @@ public class TestConfigEclipseLink {
         properties.put(PersistenceUnitProperties.TARGET_DATABASE, environment.getRequiredProperty("eclipselink.target-database"));
         properties.put(PersistenceUnitProperties.WEAVING, environment.getRequiredProperty("eclipselink.weaving"));
         properties.put(PersistenceUnitProperties.LOGGING_LEVEL, environment.getRequiredProperty("eclipselink.logging.level"));
+        properties.put(PersistenceUnitProperties.CACHE_SHARED_DEFAULT, environment.getRequiredProperty("eclipselink.cache.shared.default"));
         return properties;
     }
 
