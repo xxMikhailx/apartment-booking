@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.*;
 import java.util.List;
 
@@ -15,40 +17,43 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class ApartmentHibernateDAOImpl implements ApartmentDAO {
 
-    @Autowired
+    /*@Autowired
     private SessionFactory sessionFactory;
 
     protected Session getSession() {
         return this.sessionFactory.getCurrentSession();
-    }
+    }*/
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     public List<Apartment> findAllAvailableApartments() {
-        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Apartment> criteriaQuery = builder.createQuery(Apartment.class);
         Root<Apartment> apartmentRoot = criteriaQuery.from(Apartment.class);
         criteriaQuery.where(builder.equal(apartmentRoot.get("apartmentStatus"), ApartmentStatus.AVAILABLE))
                 .orderBy(builder.asc(apartmentRoot.get("id")));
-        return getSession().createQuery(criteriaQuery).getResultList();
+        return entityManager.createQuery(criteriaQuery).getResultList();
     }
 
     @Override
     public List<Apartment> findAllApartments() {
-        CriteriaBuilder criteriaBuilder = getSession().getCriteriaBuilder();
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 
         CriteriaQuery<Apartment> criteriaQuery = criteriaBuilder.createQuery(Apartment.class);
         Root<Apartment> apartmentRoot = criteriaQuery.from(Apartment.class);
-        return getSession().createQuery(criteriaQuery.orderBy(criteriaBuilder.asc(apartmentRoot.get("id")))).getResultList();
+        return entityManager.createQuery(criteriaQuery.orderBy(criteriaBuilder.asc(apartmentRoot.get("id")))).getResultList();
     }
 
     @Override
     public Apartment findEntityById(Long id) {
-        return getSession().get(Apartment.class, id);
+        return entityManager.find(Apartment.class, id);
     }
 
     @Override
     public List<Apartment> findAllApartmentsByCriteria(ApartmentCriteria criteria) {
-        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 
         CriteriaQuery<Apartment> criteriaQuery = builder.createQuery(Apartment.class);
         Root<Apartment> apartmentRoot = criteriaQuery.from(Apartment.class);
@@ -95,15 +100,15 @@ public class ApartmentHibernateDAOImpl implements ApartmentDAO {
 
         criteriaQuery = criteriaQuery.select(apartmentRoot).where(predicate).orderBy(builder.asc(apartmentRoot.get("id")));
 
-        return getSession().createQuery(criteriaQuery).getResultList();
+        return entityManager.createQuery(criteriaQuery).getResultList();
     }
 
     @Override
     @Transactional(readOnly = false)
     public boolean remove(Long id) {
-        Object persistentInstance = getSession().load(Apartment.class, id);
+        Object persistentInstance = entityManager.find(Apartment.class, id);
         if (persistentInstance != null) {
-            getSession().delete(persistentInstance);
+            entityManager.remove(persistentInstance);
             return true;
         } else {
             return false;
@@ -113,13 +118,14 @@ public class ApartmentHibernateDAOImpl implements ApartmentDAO {
     @Override
     @Transactional(readOnly = false)
     public boolean create(Apartment apartment) {
-        return (Long) getSession().save(apartment) > 0;
+        entityManager.persist(apartment);
+        return true;
     }
 
     @Override
     @Transactional(readOnly = false)
     public boolean update(Apartment apartment) {
-        getSession().update(apartment);
+        entityManager.merge(apartment);
         return true;
     }
 }

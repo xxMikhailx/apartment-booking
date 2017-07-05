@@ -3,16 +3,14 @@ package com.epam.apartmentbooking.dao;
 import com.epam.apartmentbooking.config.TestConfig;
 import com.epam.apartmentbooking.domain.*;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
-import com.github.springtestdbunit.annotation.DatabaseOperation;
-import com.github.springtestdbunit.annotation.DatabaseSetup;
-import com.github.springtestdbunit.annotation.DatabaseTearDown;
-import com.github.springtestdbunit.annotation.ExpectedDatabase;
+import com.github.springtestdbunit.annotation.*;
 import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -46,6 +44,11 @@ public class ApartmentDAOTest {
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL)
     public void findAllApartmentsTest() throws Exception {
         List<Apartment> apartments = apartmentDAO.findAllApartments();
+        int i = 0;
+        for (Apartment apartment :
+                apartments) {
+            System.out.println(i++ + ". " + apartment.getTitle());
+        }
         Assert.assertEquals(10, apartments.size());
         Assert.assertEquals("Lotstring", apartments.get(0).getTitle());
     }
@@ -63,7 +66,7 @@ public class ApartmentDAOTest {
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL)
     public void findAllApartmentsByCriteria() throws Exception {
         List<Apartment> apartments = apartmentDAO.findAllApartmentsByCriteria(createTestCriteria());
-        Assert.assertEquals(1, apartments.size());
+        Assert.assertEquals(2, apartments.size());
         Assert.assertEquals("Lotstring", apartments.get(0).getTitle());
     }
 
@@ -72,7 +75,7 @@ public class ApartmentDAOTest {
     @ExpectedDatabase(value = "/apartment/apartment_data_create.xml", assertionMode = DatabaseAssertionMode.NON_STRICT)
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL)
     public void createTest() throws Exception{
-        apartmentDAO.create(createTestApartment());
+        apartmentDAO.create(createTestApartmentForCreation());
     }
 
     @Test
@@ -123,12 +126,43 @@ public class ApartmentDAOTest {
         return apartment;
     }
 
+    private Apartment createTestApartmentForCreation(){
+        Apartment apartment = new Apartment();
+        User user = new User();
+        user.setId(1L);
+        user.setLogin("lbutler0");
+        user.setPassword("$2a$10$8jTNJqwX/jaJehssYn8HUO5uOhayAuVDTR5ZQrKu3EY5HYrgX1Z3W");
+        user.setEmail("lbutler0@purevolume.com");
+        user.setName("Laura");
+        user.setSurname("Butler");
+        user.setCreationDate(LocalDate.of(2016, Month.JULY, 28));
+        user.setRole(3);
+        apartment.setOwner(user);
+        apartment.setTitle("Sonsing");
+        apartment.setDescription("In hac habitasse platea dictumst.");
+        apartment.setApartmentType(ApartmentType.FLAT);
+        apartment.setPrice((BigDecimal.valueOf(44.3245)));
+        apartment.setMaxGuestNumber(4);
+        apartment.setBedNumber(3);
+        apartment.setApartmentStatus(ApartmentStatus.AVAILABLE);
+        apartment.setAddress("76994 Macpherson Court");
+        Country country = new Country();
+        country.setId(1L);
+        country.setTitle("China");
+        City city = new City();
+        city.setId(1L);
+        city.setTitle("Pinellas Park");
+        city.setCountry(country);
+        apartment.setCity(city);
+        return apartment;
+    }
+
     private ApartmentCriteria createTestCriteria(){
         ApartmentCriteria criteria = new ApartmentCriteria();
         criteria.setMinGuestNumber(1);
         criteria.setMaxGuestNumber(4);
         criteria.setMinPrice(BigDecimal.valueOf(65L));
-        criteria.setApartmentType(ApartmentType.FLAT);
+//        criteria.setApartmentType(ApartmentType.ROOM);
         return criteria;
     }
 

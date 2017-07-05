@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -17,33 +19,36 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class CountryHibernateDAOImpl implements CountryDAO {
 
-    @Autowired
+    /*@Autowired
     private SessionFactory sessionFactory;
 
     protected Session getSession() {
         return this.sessionFactory.getCurrentSession();
-    }
+    }*/
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     public List<Country> findAllCountries() {
-        CriteriaBuilder criteriaBuilder = getSession().getCriteriaBuilder();
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 
         CriteriaQuery<Country> criteriaQuery = criteriaBuilder.createQuery(Country.class);
         Root<Country> countryRoot = criteriaQuery.from(Country.class);
-        return getSession().createQuery(criteriaQuery.orderBy(criteriaBuilder.asc(countryRoot.get("id")))).getResultList();
+        return entityManager.createQuery(criteriaQuery.orderBy(criteriaBuilder.asc(countryRoot.get("id")))).getResultList();
     }
 
     @Override
     public Country findEntityById(Long id) {
-        return getSession().get(Country.class, id);
+        return entityManager.find(Country.class, id);
     }
 
     @Override
     @Transactional(readOnly = false)
     public boolean remove(Long id) {
-        Object persistentInstance = getSession().load(Country.class, id);
+        Object persistentInstance = entityManager.find(Country.class, id);
         if (persistentInstance != null) {
-            getSession().delete(persistentInstance);
+            entityManager.remove(persistentInstance);
             return true;
         } else {
             return false;
@@ -53,13 +58,14 @@ public class CountryHibernateDAOImpl implements CountryDAO {
     @Override
     @Transactional(readOnly = false)
     public boolean create(Country country) {
-        return (Long) getSession().save(country) > 0;
+        entityManager.persist(country);
+        return true;
     }
 
     @Override
     @Transactional(readOnly = false)
     public boolean update(Country country) {
-        getSession().update(country);
+        entityManager.merge(country);
         return true;
     }
 }

@@ -75,7 +75,7 @@ public class UserDAOTest {
             columnFilters = IgnoreDataColumnFilter.class)
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL)
     public void createTest() throws Exception{
-        userDAO.create(createTestUser());
+        userDAO.create(createTestUserForCreation());
     }
 
     @Test
@@ -104,6 +104,18 @@ public class UserDAOTest {
     private User createTestUser(){
         User user = new User();
         user.setId(1L);
+        user.setLogin("testLogin");
+        user.setPassword("$2a$10$8jTNJqwX/jaJehssYn8HUO5uOhayAuVDTR5ZQrKu3EY5HYrgX1Z3W");
+        user.setEmail("testEmail@test.com");
+        user.setName("testName");
+        user.setSurname("testSurname");
+        user.setCreationDate(LocalDate.of(2016, Month.JULY, 28));
+        user.setRole(1);
+        return user;
+    }
+
+    private User createTestUserForCreation(){
+        User user = new User();
         user.setLogin("testLogin");
         user.setPassword("$2a$10$8jTNJqwX/jaJehssYn8HUO5uOhayAuVDTR5ZQrKu3EY5HYrgX1Z3W");
         user.setEmail("testEmail@test.com");

@@ -32,7 +32,7 @@ public class CountryDAOTest {
     @Test
     @DatabaseSetup("/country/country_data.xml")
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL)
-    public void findAllUsersTest() throws Exception {
+    public void findAllCountriesTest() throws Exception {
         List<Country> countries = countryDAO.findAllCountries();
         Assert.assertEquals(10, countries.size());
         Assert.assertEquals("China", countries.get(0).getTitle());
@@ -51,7 +51,7 @@ public class CountryDAOTest {
     @ExpectedDatabase(value = "/country/country_data_create.xml", assertionMode = DatabaseAssertionMode.NON_STRICT)
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL)
     public void createTest() throws Exception{
-        countryDAO.create(createTestCountry());
+        countryDAO.create(createTestCountryForCreation());
     }
 
     @Test
@@ -73,6 +73,12 @@ public class CountryDAOTest {
     private Country createTestCountry(){
         Country country = new Country();
         country.setId(1L);
+        country.setTitle("Sweden");
+        return country;
+    }
+
+    private Country createTestCountryForCreation(){
+        Country country = new Country();
         country.setTitle("Sweden");
         return country;
     }

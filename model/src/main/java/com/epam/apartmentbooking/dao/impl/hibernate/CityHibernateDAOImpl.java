@@ -2,14 +2,18 @@ package com.epam.apartmentbooking.dao.impl.hibernate;
 
 import com.epam.apartmentbooking.dao.CityDAO;
 import com.epam.apartmentbooking.domain.City;
+import com.epam.apartmentbooking.domain.Country;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Fetch;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
@@ -17,33 +21,36 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class CityHibernateDAOImpl implements CityDAO {
 
-    @Autowired
+    /*@Autowired
     private SessionFactory sessionFactory;
 
     protected Session getSession() {
         return this.sessionFactory.getCurrentSession();
-    }
+    }*/
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     public List<City> findAllCities() {
-        CriteriaBuilder criteriaBuilder = getSession().getCriteriaBuilder();
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 
         CriteriaQuery<City> criteriaQuery = criteriaBuilder.createQuery(City.class);
         Root<City> cityRoot = criteriaQuery.from(City.class);
-        return getSession().createQuery(criteriaQuery.orderBy(criteriaBuilder.asc(cityRoot.get("id")))).getResultList();
+        return entityManager.createQuery(criteriaQuery.orderBy(criteriaBuilder.asc(cityRoot.get("id")))).getResultList();
     }
 
     @Override
     public City findEntityById(Long id) {
-        return getSession().get(City.class, id);
+        return entityManager.find(City.class, id);
     }
 
     @Override
     @Transactional(readOnly = false)
     public boolean remove(Long id) {
-        Object persistentInstance = getSession().load(City.class, id);
+        Object persistentInstance = entityManager.find(City.class, id);
         if (persistentInstance != null) {
-            getSession().delete(persistentInstance);
+            entityManager.remove(persistentInstance);
             return true;
         } else {
             return false;
@@ -53,13 +60,14 @@ public class CityHibernateDAOImpl implements CityDAO {
     @Override
     @Transactional(readOnly = false)
     public boolean create(City city) {
-        return (Long) getSession().save(city) > 0;
+        entityManager.persist(city);
+        return true;
     }
 
     @Override
     @Transactional(readOnly = false)
     public boolean update(City city) {
-        getSession().update(city);
+        entityManager.merge(city);
         return true;
     }
 }

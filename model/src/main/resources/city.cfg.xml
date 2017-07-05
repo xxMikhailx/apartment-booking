@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.epam.apartmentbooking.domain.City" table="CITIES">
+        <id name="id" column="CT_ID_PK" type="long">
+            <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
+                <param name="sequence_name">CITIES_SEQ</param>
+                <param name="prefer_sequence_per_entity">true</param>
+                <param name="optimizer">none</param>
+                <param name="increment_size">1</param>
+            </generator>
+        </id>
+
+        <property name="title" column="CT_TITLE" type="string"/>
+
+        <many-to-one name="country" class="com.epam.apartmentbooking.domain.Country" lazy="false">
+            <column name="CT_COUNTRY_ID" not-null="true" />
+        </many-to-one>
+    </class>
+</hibernate-mapping>

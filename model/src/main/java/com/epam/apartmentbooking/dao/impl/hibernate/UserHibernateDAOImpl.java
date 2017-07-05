@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -18,53 +20,60 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class UserHibernateDAOImpl implements UserDAO {
 
+/*
     @Autowired
     private SessionFactory sessionFactory;
+*/
 
+/*
     protected Session getSession() {
         return this.sessionFactory.getCurrentSession();
     }
+*/
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     public List<User> findAllUsers(){
-        CriteriaBuilder criteriaBuilder = getSession().getCriteriaBuilder();
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 
         CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
         Root<User> userRoot = criteriaQuery.from(User.class);
-        return getSession().createQuery(criteriaQuery.orderBy(criteriaBuilder.asc(userRoot.get("id")))).getResultList();
+        return entityManager.createQuery(criteriaQuery.orderBy(criteriaBuilder.asc(userRoot.get("id")))).getResultList();
     }
 
     @Override
     public User findEntityById(Long id) {
-        return getSession().get(User.class, id);
+        return entityManager.find(User.class, id);
     }
 
     @Override
     public Long findUserIdByEmail(String email) {
-        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 
         CriteriaQuery<User> criteria = builder.createQuery(User.class);
         Root<User> root = criteria.from(User.class);
         criteria.where(builder.equal(root.get("email"), email));
 
-        return getSession().createQuery(criteria).uniqueResult().getId();
+        return entityManager.createQuery(criteria).getSingleResult().getId();
     }
 
     @Override
     @Transactional(readOnly = false)
     public boolean changeUserPassword(String password, Long id){
-        User user = getSession().get(User.class, id);
+        User user = entityManager.find(User.class, id);
         user.setPassword(password);
-        getSession().update(user);
+        entityManager.merge(user);
         return true;
     }
 
     @Override
     @Transactional(readOnly = false)
     public boolean remove(Long id) {
-        Object persistentInstance = getSession().load(User.class, id);
+        Object persistentInstance = entityManager.find(User.class, id);
         if (persistentInstance != null) {
-            getSession().delete(persistentInstance);
+            entityManager.remove(persistentInstance);
             return true;
         } else {
             return false;
@@ -75,13 +84,14 @@ public class UserHibernateDAOImpl implements UserDAO {
     @Transactional(readOnly = false)
     public boolean create(User user) {
         user.setCreationDate(LocalDate.now());
-        return (Long) getSession().save(user) > 0;
+        entityManager.persist(user);
+        return true;
     }
 
     @Override
     @Transactional(readOnly = false)
     public boolean update(User user) {
-        getSession().update(user);
+        entityManager.merge(user);
         return true;
     }
 }

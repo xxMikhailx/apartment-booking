@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.epam.apartmentbooking.domain.Apartment" table="APARTMENTS">
+        <id name="id" column="AP_ID_PK" type="long">
+            <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
+                <param name="sequence_name">APARTMENTS_SEQ</param>
+                <param name="prefer_sequence_per_entity">true</param>
+                <param name="optimizer">none</param>
+                <param name="increment_size">1</param>
+            </generator>
+        </id>
+
+        <property name="title" column="AP_TITLE" type="string" />
+
+        <property name="description" column="AP_DESCRIPTION" type="string"/>
+
+        <property name="apartmentType" column="AP_TYPE">
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">com.epam.apartmentbooking.domain.ApartmentType</param>
+                <param name="useNamed">true</param>
+            </type>
+        </property>
+
+        <property name="price" column="AP_PRICE" type="java.math.BigDecimal" />
+
+        <property name="maxGuestNumber" column="AP_MAX_GUEST_NUMBER" type="int" />
+
+        <property name="bedNumber" column="AP_BED_NUMBER" type="int" />
+
+        <property name="apartmentStatus" column="AP_STATUS">
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">com.epam.apartmentbooking.domain.ApartmentStatus</param>
+                <param name="useNamed">true</param>
+            </type>
+        </property>
+
+        <property name="address" column="AP_ADDRESS" type="string" />
+
+        <many-to-one name="owner" class="com.epam.apartmentbooking.domain.User">
+            <column name="AP_OWNER_ID" not-null="true" />
+        </many-to-one>
+
+        <many-to-one name="city" class="com.epam.apartmentbooking.domain.City">
+            <column name="AP_CITY_ID" not-null="true" />
+        </many-to-one>
+    </class>
+</hibernate-mapping>

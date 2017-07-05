@@ -33,7 +33,7 @@ public class CityDAOTest {
     @Test
     @DatabaseSetup("/city/city_data.xml")
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL)
-    public void findAllUsersTest() throws Exception {
+    public void findAllCitiesTest() throws Exception {
         List<City> cities = cityDAO.findAllCities();
         Assert.assertEquals(10, cities.size());
         Assert.assertEquals("Pinellas Park", cities.get(0).getTitle());
@@ -55,7 +55,7 @@ public class CityDAOTest {
     @ExpectedDatabase(value = "/city/city_data_create.xml", assertionMode = DatabaseAssertionMode.NON_STRICT)
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL)
     public void createTest() throws Exception{
-        cityDAO.create(createTestCity());
+        cityDAO.create(createTestCityForCreation());
     }
 
     @Test
@@ -84,4 +84,14 @@ public class CityDAOTest {
         city.setCountry(country);
         return city;
     }
+    private City createTestCityForCreation(){
+        City city = new City();
+        city.setTitle("Minsk");
+        Country country = new Country();
+        country.setId(10L);
+        country.setTitle("Belarus");
+        city.setCountry(country);
+        return city;
+    }
+
 }

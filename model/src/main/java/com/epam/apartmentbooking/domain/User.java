@@ -44,7 +44,7 @@ public class User {
     private String surname;
 
     @Column(name = "US_CREATION_DATE")
-    private LocalDate creationDate;
+    private java.time.LocalDate creationDate;
 
     @Column(name = "US_ROLE")
     private int role;

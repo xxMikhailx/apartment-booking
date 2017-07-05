@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.epam.apartmentbooking.domain.User" table="USERS">
+        <id name="id" column="US_ID_PK" type="long">
+            <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
+                <param name="sequence_name">USERS_SEQ</param>
+                <param name="prefer_sequence_per_entity">true</param>
+                <param name="optimizer">none</param>
+                <param name="increment_size">1</param>
+            </generator>
+        </id>
+
+        <property name="login" column="US_LOGIN" type="string" unique="true"/>
+
+        <property name="password" column="US_PASSWORD" type="string"/>
+
+        <property name="email" column="US_EMAIL" type="string" unique="true"/>
+
+        <property name="name" column="US_NAME" type="string"/>
+
+        <property name="surname" column="US_SURNAME" type="string"/>
+
+        <property name="creationDate" column="US_CREATION_DATE" type="java.time.LocalDate"/>
+
+        <property name="role" column="US_ROLE" type="int"/>
+    </class>
+</hibernate-mapping>
