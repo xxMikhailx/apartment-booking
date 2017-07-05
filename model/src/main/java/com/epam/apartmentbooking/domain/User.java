@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "USERS", schema = "TEST")
+@Table(name = "USERS")
 public class User {
 
     @Id
@@ -24,7 +24,7 @@ public class User {
     private String login;
 
     @NotNull
-    @Size(min = 5, max = 40, message = "{password.size.error}")
+    @Size(min = 5, max = 60, message = "{password.size.error}")
     @Column(name = "US_PASSWORD", length = 60)
     private String password;
 

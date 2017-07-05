@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository("userDAO")
@@ -73,6 +74,7 @@ public class UserHibernateDAOImpl implements UserDAO {
     @Override
     @Transactional(readOnly = false)
     public boolean create(User user) {
+        user.setCreationDate(LocalDate.now());
         return (Long) getSession().save(user) > 0;
     }
 

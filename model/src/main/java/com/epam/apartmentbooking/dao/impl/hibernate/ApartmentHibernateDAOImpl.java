@@ -25,7 +25,6 @@ public class ApartmentHibernateDAOImpl implements ApartmentDAO {
     @Override
     public List<Apartment> findAllAvailableApartments() {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
-
         CriteriaQuery<Apartment> criteriaQuery = builder.createQuery(Apartment.class);
         Root<Apartment> apartmentRoot = criteriaQuery.from(Apartment.class);
         criteriaQuery.where(builder.equal(apartmentRoot.get("apartmentStatus"), ApartmentStatus.AVAILABLE))
@@ -53,88 +52,50 @@ public class ApartmentHibernateDAOImpl implements ApartmentDAO {
 
         CriteriaQuery<Apartment> criteriaQuery = builder.createQuery(Apartment.class);
         Root<Apartment> apartmentRoot = criteriaQuery.from(Apartment.class);
-        Root<City> cityRoot = criteriaQuery.from(City.class);
-        Root<Country> countryRoot = criteriaQuery.from(Country.class);
+        Join<Apartment, City> apartmentCityJoin = apartmentRoot.join("city");
+        Join<City, Country> cityCountryJoin = apartmentCityJoin.join("country");
 
         Predicate predicate = builder.conjunction();
-        predicate = addCriteriaEqual(criteria.getTitle(), "title", apartmentRoot, predicate);
-        System.out.println(criteria.getApartmentType());
-        predicate = addCriteriaEqualEnum(criteria.getApartmentType(), "apartmentType", apartmentRoot, predicate);
-        predicate = addCriteriaEqual(criteria.getApartmentStatus(), "apartmentStatus", apartmentRoot, predicate);
-        predicate = addCriteriaEqual(criteria.getCityId(), "id", cityRoot, predicate);
-        predicate = addCriteriaEqual(criteria.getCountryId(), "id", countryRoot, predicate);
-        predicate = addCriteriaGreaterThan(criteria.getMinPrice(), "price", apartmentRoot, predicate);
-        predicate = addCriteriaGreaterThan(criteria.getMinGuestNumber(), "maxGuestNumber", apartmentRoot, predicate);
-        predicate = addCriteriaGreaterThan(criteria.getMinBedNumber(), "bedNumber", apartmentRoot, predicate);
-        predicate = addCriteriaLowerThan(criteria.getMaxPrice(), "price", apartmentRoot, predicate);
-        predicate = addCriteriaLowerThan(criteria.getMaxGuestNumber(), "maxGuestNumber", apartmentRoot, predicate);
-        predicate = addCriteriaLowerThan(criteria.getMaxBedNumber(), "bedNumber", apartmentRoot, predicate);
-        predicate = addCriteriaLike(criteria.getAddress(), "address", apartmentRoot, predicate);
+        if (criteria.getTitle() != null){
+            predicate = builder.and(predicate, builder.equal(apartmentRoot.get("title"), criteria.getTitle()));
+        }
+        if (criteria.getApartmentType() != null){
+            predicate = builder.and(predicate, builder.equal(apartmentRoot.get("apartmentType"), criteria.getApartmentType()));
+        }
+        if (criteria.getApartmentStatus() != null){
+            predicate = builder.and(predicate, builder.equal(apartmentRoot.get("apartmentStatus"), criteria.getApartmentStatus()));
+        }
+        if (criteria.getCityId() != null){
+            predicate = builder.and(predicate, builder.equal(apartmentCityJoin.get("id"), criteria.getCityId()));
+        }
+        if (criteria.getCountryId() != null){
+            predicate = builder.and(predicate, builder.equal(cityCountryJoin.get("id"), criteria.getCountryId()));
+        }
+        if (criteria.getMinPrice() != null){
+            predicate = builder.and(predicate, builder.ge(apartmentRoot.get("price"), criteria.getMinPrice()));
+        }
+        if (criteria.getMinGuestNumber() != null){
+            predicate = builder.and(predicate, builder.ge(apartmentRoot.get("maxGuestNumber"), criteria.getMinGuestNumber()));
+        }
+        if (criteria.getMinBedNumber() != null){
+            predicate = builder.and(predicate, builder.ge(apartmentRoot.get("bedNumber"), criteria.getMinBedNumber()));
+        }
+        if (criteria.getMaxPrice() != null){
+            predicate = builder.and(predicate, builder.le(apartmentRoot.get("price"), criteria.getMaxPrice()));
+        }
+        if (criteria.getMaxGuestNumber() != null){
+            predicate = builder.and(predicate, builder.le(apartmentRoot.get("maxGuestNumber"), criteria.getMaxGuestNumber()));
+        }
+        if (criteria.getMaxBedNumber() != null){
+            predicate = builder.and(predicate, builder.le(apartmentRoot.get("bedNumber"), criteria.getMaxBedNumber()));
+        }
+        if (criteria.getAddress() != null){
+            predicate = builder.and(predicate, builder.like(apartmentRoot.get("address"), criteria.getAddress()));
+        }
 
         criteriaQuery = criteriaQuery.select(apartmentRoot).where(predicate).orderBy(builder.asc(apartmentRoot.get("id")));
 
         return getSession().createQuery(criteriaQuery).getResultList();
-    }
-
-    private Predicate addCriteriaEqual(Object fieldToEqual, String fieldName, Root rootObj, Predicate predicate){
-        CriteriaBuilder criteriaBuilder = getSession().getCriteriaBuilder();
-        if (fieldToEqual != null) {
-            predicate = criteriaBuilder.and(
-                    predicate,
-                    criteriaBuilder.equal(rootObj.get(fieldName), fieldToEqual));
-        } else {
-            predicate = criteriaBuilder.and(predicate, criteriaBuilder.isNull(rootObj.get(fieldName)));
-        }
-        return predicate;
-    }
-
-    // TODO: 6/21/2017 remove commented code
-    private Predicate addCriteriaEqualEnum(Enum fieldToEqual, String fieldName, Root rootObj, Predicate predicate){
-        CriteriaBuilder criteriaBuilder = getSession().getCriteriaBuilder();
-        if (fieldToEqual != null) {
-            predicate = criteriaBuilder.and(
-                    predicate,
-                    criteriaBuilder.equal(rootObj.get(fieldName), fieldToEqual));
-        } else {
-            predicate = criteriaBuilder.and(predicate, criteriaBuilder.isNull(rootObj.get(fieldName)));
-        }
-        return predicate;
-    }
-
-    private Predicate addCriteriaGreaterThan(Number numberToEqual, String fieldName, Root rootObj, Predicate predicate){
-        CriteriaBuilder criteriaBuilder = getSession().getCriteriaBuilder();
-        if (numberToEqual != null) {
-            predicate = criteriaBuilder.and(
-                    predicate,
-                    criteriaBuilder.ge(rootObj.get(fieldName), numberToEqual));
-        } else {
-            predicate = criteriaBuilder.and(predicate, criteriaBuilder.isNull(rootObj.get(fieldName)));
-        }
-        return predicate;
-    }
-
-    private Predicate addCriteriaLowerThan(Number numberToEqual, String fieldName, Root rootObj, Predicate predicate){
-        CriteriaBuilder criteriaBuilder = getSession().getCriteriaBuilder();
-        if (numberToEqual != null) {
-            predicate = criteriaBuilder.and(
-                    predicate,
-                    criteriaBuilder.le(rootObj.get(fieldName), numberToEqual));
-        } else {
-            predicate = criteriaBuilder.and(predicate, criteriaBuilder.isNull(rootObj.get(fieldName)));
-        }
-        return predicate;
-    }
-
-    private Predicate addCriteriaLike(String fieldToEqual, String fieldName, Root rootObj, Predicate predicate){
-        CriteriaBuilder criteriaBuilder = getSession().getCriteriaBuilder();
-        if (fieldToEqual != null) {
-            predicate = criteriaBuilder.and(
-                    predicate,
-                    criteriaBuilder.like(rootObj.get(fieldName), fieldToEqual));
-        } else {
-            predicate = criteriaBuilder.and(predicate, criteriaBuilder.isNull(rootObj.get(fieldName)));
-        }
-        return predicate;
     }
 
     @Override

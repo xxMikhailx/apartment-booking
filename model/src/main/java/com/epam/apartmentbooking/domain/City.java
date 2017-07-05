@@ -3,7 +3,7 @@ package com.epam.apartmentbooking.domain;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "CITIES", schema = "TEST")
+@Table(name = "CITIES")
 public class City {
 
     @Id

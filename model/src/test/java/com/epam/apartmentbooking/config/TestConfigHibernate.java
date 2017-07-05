@@ -1,8 +1,5 @@
 package com.epam.apartmentbooking.config;
 
-import com.github.springtestdbunit.bean.DatabaseConfigBean;
-import com.github.springtestdbunit.bean.DatabaseDataSourceConnectionFactoryBean;
-import org.dbunit.ext.oracle.OracleDataTypeFactory;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AvailableSettings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +17,6 @@ import java.util.Properties;
 @EnableTransactionManagement
 @ComponentScan({"com.epam.apartmentbooking.domain","com.epam.apartmentbooking.dao.impl.hibernate"})
 @PropertySources(value = {@PropertySource("classpath:db.properties")})
-@Import(EmailConfig.class)
 public class TestConfigHibernate {
 
     @Autowired
@@ -61,22 +57,4 @@ public class TestConfigHibernate {
         txManager.setSessionFactory(s);
         return txManager;
     }
-
-    @Bean
-    public DatabaseConfigBean dbUnitDatabaseConfig() {
-        DatabaseConfigBean dbConfig = new DatabaseConfigBean();
-        dbConfig.setDatatypeFactory(new OracleDataTypeFactory());
-        return dbConfig;
-    }
-
-    @Bean
-    @Autowired
-    public DatabaseDataSourceConnectionFactoryBean dbUnitDatabaseConnection(DataSource testDataSource) {
-        DatabaseDataSourceConnectionFactoryBean dbConnFactoryBean = new DatabaseDataSourceConnectionFactoryBean();
-        dbConnFactoryBean.setDatabaseConfig(dbUnitDatabaseConfig());
-        dbConnFactoryBean.setDataSource(dataSource());
-        dbConnFactoryBean.setSchema(environment.getRequiredProperty("jdbc.testSchema"));
-        return dbConnFactoryBean;
-    }
-
 }

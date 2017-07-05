@@ -4,6 +4,7 @@ import com.epam.apartmentbooking.interceptor.GuestSecurityInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.*;
@@ -17,7 +18,8 @@ import java.util.Locale;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = "com.epam.apartmentbooking")
+@ComponentScan(basePackages = "com.epam.apartmentbooking.controller")
+@Import(MainConfig.class)
 public class WebAppConfig extends WebMvcConfigurerAdapter {
 
     @Bean
