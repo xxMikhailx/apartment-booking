@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import javax.sql.DataSource;
 
 @Configuration
+@Profile("jdbc")
 @ComponentScan("com.epam.apartmentbooking.dao.impl.jdbc")
 @PropertySources(value = {@PropertySource("classpath:db.properties")})
 public class DBConfig {

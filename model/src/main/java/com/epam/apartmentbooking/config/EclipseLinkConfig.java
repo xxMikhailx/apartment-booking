@@ -1,5 +1,6 @@
 package com.epam.apartmentbooking.config;
 
+import org.eclipse.persistence.config.PersistenceUnitProperties;
 import org.hibernate.cfg.AvailableSettings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
@@ -7,6 +8,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.EclipseLinkJpaVendorAdapter;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -15,11 +17,11 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
-@Profile("hibernate")
+@Profile("eclipselink")
 @EnableTransactionManagement
-@ComponentScan({"com.epam.apartmentbooking.domain","com.epam.apartmentbooking.dao.impl.hibernate"})
-@PropertySources(value = {@PropertySource("classpath:db.properties")})
-public class TestConfigHibernate {
+@ComponentScan("com.epam.apartmentbooking.dao.impl.hibernate")
+@PropertySource(value = { "classpath:db.properties" })
+public class EclipseLinkConfig {
 
     @Autowired
     private Environment environment;
@@ -29,17 +31,16 @@ public class TestConfigHibernate {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(environment.getRequiredProperty("jdbc.driverClassName"));
         dataSource.setUrl(environment.getRequiredProperty("jdbc.url"));
-        dataSource.setUsername(environment.getRequiredProperty("jdbc.testUsername"));
-        dataSource.setPassword(environment.getRequiredProperty("jdbc.testPassword"));
+        dataSource.setUsername(environment.getRequiredProperty("jdbc.username"));
+        dataSource.setPassword(environment.getRequiredProperty("jdbc.password"));
         return dataSource;
     }
 
-    private Properties hibernateProperties() {
+    private Properties eclipseLinkProperties() {
         Properties properties = new Properties();
-        properties.put(AvailableSettings.DIALECT, environment.getRequiredProperty("hibernate.dialect"));
-        properties.put(AvailableSettings.SHOW_SQL, environment.getRequiredProperty("hibernate.show_sql"));
-        properties.put(AvailableSettings.FORMAT_SQL, environment.getRequiredProperty("hibernate.format_sql"));
-        properties.put(AvailableSettings.HBM2DDL_AUTO, environment.getRequiredProperty("hibernate.hbm2ddl.auto"));
+        properties.put(PersistenceUnitProperties.TARGET_DATABASE, environment.getRequiredProperty("eclipselink.target-database"));
+        properties.put(PersistenceUnitProperties.WEAVING, environment.getRequiredProperty("eclipselink.weaving"));
+        properties.put(PersistenceUnitProperties.LOGGING_LEVEL, environment.getRequiredProperty("eclipselink.logging.level"));
         return properties;
     }
 
@@ -48,9 +49,9 @@ public class TestConfigHibernate {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
         final LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactory.setDataSource(dataSource);
-        entityManagerFactory.setJpaProperties(hibernateProperties());
-        entityManagerFactory.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-        entityManagerFactory.setMappingResources("apartment.cfg.xml","user.cfg.xml","country.cfg.xml","city.cfg.xml");
+        entityManagerFactory.setPackagesToScan(environment.getRequiredProperty("hibernate.packages.to.scan"));
+        entityManagerFactory.setJpaProperties(eclipseLinkProperties());
+        entityManagerFactory.setJpaVendorAdapter(new EclipseLinkJpaVendorAdapter());
         return entityManagerFactory;
     }
 

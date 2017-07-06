@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Import;
 @ComponentScan({"com.epam.apartmentbooking.domain",
         "com.epam.apartmentbooking.service",
         "com.epam.apartmentbooking.util"})
-@Import({HibernateConfig.class, EmailConfig.class})
+@Import({DBConfig.class, HibernateConfig.class, EclipseLinkConfig.class, EmailConfig.class})
 public class MainConfig {
 
 }

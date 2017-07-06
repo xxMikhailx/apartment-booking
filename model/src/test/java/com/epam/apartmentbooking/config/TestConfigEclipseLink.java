@@ -15,6 +15,7 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
+@Profile("eclipselink")
 @EnableTransactionManagement
 @ComponentScan({"com.epam.apartmentbooking.domain","com.epam.apartmentbooking.dao.impl.hibernate"})
 @PropertySources(value = {@PropertySource("classpath:db.properties")})

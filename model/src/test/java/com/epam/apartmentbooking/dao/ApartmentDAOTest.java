@@ -44,11 +44,6 @@ public class ApartmentDAOTest {
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL)
     public void findAllApartmentsTest() throws Exception {
         List<Apartment> apartments = apartmentDAO.findAllApartments();
-        int i = 0;
-        for (Apartment apartment :
-                apartments) {
-            System.out.println(i++ + ". " + apartment.getTitle());
-        }
         Assert.assertEquals(10, apartments.size());
         Assert.assertEquals("Lotstring", apartments.get(0).getTitle());
     }

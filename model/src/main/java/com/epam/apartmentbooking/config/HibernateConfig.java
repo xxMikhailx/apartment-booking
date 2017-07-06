@@ -1,16 +1,10 @@
 package com.epam.apartmentbooking.config;
 
-import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AvailableSettings;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.orm.hibernate5.HibernateTransactionManager;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -21,6 +15,7 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
+@Profile("hibernate")
 @EnableTransactionManagement
 @ComponentScan("com.epam.apartmentbooking.dao.impl.hibernate")
 @PropertySource(value = { "classpath:db.properties" })
@@ -28,23 +23,6 @@ public class HibernateConfig {
 
     @Autowired
     private Environment environment;
-
-    /*@Bean
-    public LocalSessionFactoryBean sessionFactory() {
-        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-        sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan(environment.getRequiredProperty("hibernate.packages.to.scan"));
-        sessionFactory.setHibernateProperties(hibernateProperties());
-        return sessionFactory;
-    }
-
-    @Bean
-    @Autowired
-    public HibernateTransactionManager transactionManager(SessionFactory s) {
-        HibernateTransactionManager txManager = new HibernateTransactionManager();
-        txManager.setSessionFactory(s);
-        return txManager;
-    }*/
 
     @Bean
     public DataSource dataSource() {

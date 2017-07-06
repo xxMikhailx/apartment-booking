@@ -11,7 +11,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @PropertySources(value = {@PropertySource("classpath:db.properties")})
-@Import({EmailConfig.class, TestConfigEclipseLink.class})
+@Import({EmailConfig.class, TestConfigJdbc.class, TestConfigHibernate.class, TestConfigEclipseLink.class})
 public class TestConfig {
 
     @Autowired
