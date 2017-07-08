@@ -18,7 +18,7 @@
 		<hibernate.version>5.2.10.Final</hibernate.version>
 		<spring-security-crypto.version>4.2.2.RELEASE</spring-security-crypto.version>
 		<dbcp.version>2.1.1</dbcp.version>
-		<ojdbc.version>12.2.0.3</ojdbc.version>
+		<ojdbc.version>12.1.0.2</ojdbc.version>
         <commons-lang.version>2.6</commons-lang.version>
         <javax.mail.version>1.5.6</javax.mail.version>
 
@@ -82,12 +82,13 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.oracle</groupId>
+			<groupId>com.github.noraui</groupId>
 			<artifactId>ojdbc7</artifactId>
 			<version>${ojdbc.version}</version>
 		</dependency>
 
-        <!-- UTIL -->
+
+		<!-- UTIL -->
 
         <dependency>
             <groupId>com.sun.mail</groupId>
